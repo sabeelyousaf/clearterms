@@ -1,22 +1,22 @@
 //Auth
-const login = "http://localhost:8000/api/login"
-const register = "http://localhost:8000/api/register"
-const profileUpdate = "http://localhost:8000/api/profile-update"
+const login = "http://api.shaheendrives.com/api/login"
+const register = "http://api.shaheendrives.com/api/register"
+const profileUpdate = "http://api.shaheendrives.com/api/profile-update"
 
 
 //Stripe
-const checkSubscription="http://localhost:8000/api/check-subscription"
-const checkoutSession="http://localhost:8000/api/create-checkout-session"
+const checkSubscription="http://api.shaheendrives.com/api/check-subscription"
+const checkoutSession="http://api.shaheendrives.com/api/create-checkout-session"
 
 //Docs
-const allDocs="http://localhost:8000/api/docs"
-const singleDoc="http://localhost:8000/api/doc"
-const uploadDoc="http://localhost:8000/api/doc/upload"
+const allDocs="http://api.shaheendrives.com/api/docs"
+const singleDoc="http://api.shaheendrives.com/api/doc"
+const uploadDoc="http://api.shaheendrives.com/api/doc/upload"
 
 
 //AI
-const docSummarize="http://localhost:8000/api/doc/summarize"
-const docSimplify="http://localhost:8000/api/doc/simplify"
+const docSummarize="http://api.shaheendrives.com/api/doc/summarize"
+const docSimplify="http://api.shaheendrives.com/api/doc/simplify"
 
 
 

@@ -1,7 +1,7 @@
 "use client";
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AiOutlineMenu } from 'react-icons/ai'; // Icon for mobile menu
 import { motion } from 'framer-motion';
 import { AiOutlineUser } from 'react-icons/ai'; // Profile icon
@@ -9,6 +9,7 @@ import { AiOutlineUser } from 'react-icons/ai'; // Profile icon
 const Header = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
@@ -18,7 +19,11 @@ const Header = () => {
         setDropdownOpen(!dropdownOpen);
     };
 
-    const isLoggedIn = sessionStorage.getItem('token') !== null; // Check if token exists
+    // Check if the user is logged in
+    useEffect(() => {
+        const token = sessionStorage.getItem('token');
+        setIsLoggedIn(token !== null); // Update logged-in state
+    }, []);
 
     return (
         <div>
@@ -42,6 +47,7 @@ const Header = () => {
                                         <Link href="/dashboard/profile" className="block px-4 py-2 text-sm hover:bg-indigo-100">Settings</Link>
                                         <button onClick={() => {
                                             sessionStorage.removeItem('token'); // Clear the token on logout
+                                            setIsLoggedIn(false); // Update logged-in state
                                             window.location.href = '/'; // Redirect to homepage
                                         }} className="block w-full text-left px-4 py-2 text-sm hover:bg-indigo-100">Logout</button>
                                     </div>
@@ -80,6 +86,7 @@ const Header = () => {
                                             <Link href="/dashboard/profile" className="block px-4 py-2 text-sm hover:bg-indigo-100">Settings</Link>
                                             <button onClick={() => {
                                                 sessionStorage.removeItem('token'); // Clear the token on logout
+                                                setIsLoggedIn(false); // Update logged-in state
                                                 window.location.href = '/'; // Redirect to homepage
                                             }} className="block w-full text-left px-4 py-2 text-sm hover:bg-indigo-100">Logout</button>
                                         </div>
