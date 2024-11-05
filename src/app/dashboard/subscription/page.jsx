@@ -10,6 +10,7 @@ const stripePromise = loadStripe("pk_test_51MZZceFROfbArqV2MpRbFWhhs9PhHfKSuInwS
 
 const Subscription = () => {
     const [subscription, setSubscription] = useState(false);
+    const [loading, setLoading] = useState(true); // Step 1: Set initial loading state to true
 
     const premiumFeatures = [
         "Advanced simplification options",
@@ -24,27 +25,28 @@ const Subscription = () => {
     ];
 
     const fetchSubscription = async () => {
-      const token = sessionStorage.getItem("token");
-      try {
-        const response = await axios.get(checkSubscription, {
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        });
-        
-        console.log(response);
-        
-        const subscriptionStatus = response.data.subscription;
-        setSubscription(subscriptionStatus);
-      } catch (error) {
-        console.error("Error fetching subscription:", error);
-      }
+        const token = sessionStorage.getItem("token");
+        try {
+            const response = await axios.get(checkSubscription, {
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            });
+
+            console.log(response);
+            const subscriptionStatus = response.data.subscription;
+            setSubscription(subscriptionStatus);
+        } catch (error) {
+            console.error("Error fetching subscription:", error);
+        } finally {
+            setLoading(false); // Step 2: Set loading to false after the API call
+        }
     };
+
     useEffect(() => {
-      fetchSubscription();
+        fetchSubscription();
     }, []);
-    
 
     const handleCheckout = async () => {
         const stripe = await stripePromise;
@@ -56,6 +58,8 @@ const Subscription = () => {
 
         const price = 9.99;
         const token = sessionStorage.getItem("token");
+
+        setLoading(true); // Set loading to true while processing checkout
 
         try {
             const response = await axios.post(
@@ -79,7 +83,8 @@ const Subscription = () => {
             }
         } catch (error) {
             console.error("Error creating checkout session:", error);
-            // Optionally, show an error message to the user here
+        } finally {
+            setLoading(false); // Set loading to false after the API call is complete
         }
     };
 
@@ -89,7 +94,18 @@ const Subscription = () => {
             <div className="p-3 md:p-8 w-full">
                 <h1 className="text-3xl font-bold mb-6">Subscription Plans</h1>
 
-                {subscription ? (
+                {loading ? ( // Step 3: Show spinner while loading
+                    <div className="flex items-center justify-center h-64">
+                        <svg
+                            className="animate-spin h-10 w-10 text-indigo-600"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                        >
+                            <circle className="opacity-25" cx="12" cy="12" r="10" fill="currentColor" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 000 8v4a8 8 0 01-8-8z" />
+                        </svg>
+                    </div>
+                ) : subscription ? (
                     <p className="text-lg font-semibold text-green-600">
                         You already have an active subscription.
                     </p>
@@ -114,9 +130,23 @@ const Subscription = () => {
                             </div>
                             <p
                                 onClick={handleCheckout}
-                                className="bg-indigo-600 text-center text-white px-8 py-3 rounded-full font-bold cursor-pointer transition-transform transform hover:scale-105"
+                                className={`bg-indigo-600 text-center text-white px-8 py-3 rounded-full font-bold cursor-pointer transition-transform transform hover:scale-105 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
                             >
-                                Upgrade Now
+                                {loading ? (
+                                    <span className="flex items-center justify-center">
+                                        <svg
+                                            className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <circle className="opacity-25" cx="12" cy="12" r="10" fill="currentColor" />
+                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 000 8v4a8 8 0 01-8-8z" />
+                                        </svg>
+                                        Processing...
+                                    </span>
+                                ) : (
+                                    "Upgrade Now"
+                                )}
                             </p>
                         </div>
                     </div>

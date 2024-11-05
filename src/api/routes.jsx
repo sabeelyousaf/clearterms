@@ -1,23 +1,33 @@
-//Auth
-const login = "https://api.shaheendrives.com/api/login"
-const register = "https://api.shaheendrives.com/api/register"
-const profileUpdate = "https://api.shaheendrives.com/api/profile-update"
+// Base URL
+const BASE_URL = "http://127.0.0.1:8000/api";
 
+// Auth
+const login = `${BASE_URL}/login`;
+const register = `${BASE_URL}/register`;
+const profileUpdate = `${BASE_URL}/profile-update`;
 
-//Stripe
-const checkSubscription="https://api.shaheendrives.com/api/check-subscription"
-const checkoutSession="https://api.shaheendrives.com/api/create-checkout-session"
+// Stripe
+const checkSubscription = `${BASE_URL}/check-subscription`;
+const checkoutSession = `${BASE_URL}/create-checkout-session`;
 
-//Docs
-const allDocs="https://api.shaheendrives.com/api/docs"
-const singleDoc="https://api.shaheendrives.com/api/doc"
-const uploadDoc="https://api.shaheendrives.com/api/doc/upload"
+// Docs
+const allDocs = `${BASE_URL}/docs`;
+const singleDoc = `${BASE_URL}/doc`;
+const uploadDoc = `${BASE_URL}/doc/upload`;
 
+// AI
+const docSummarize = `${BASE_URL}/doc/summarize`;
+const docSimplify = `${BASE_URL}/doc/simplify`;
 
-//AI
-const docSummarize="https://api.shaheendrives.com/api/doc/summarize"
-const docSimplify="https://api.shaheendrives.com/api/doc/simplify"
-
-
-
-export {login, register ,checkSubscription,checkoutSession,allDocs,uploadDoc,docSummarize,docSimplify,profileUpdate,singleDoc}
+export {
+    login,
+    register,
+    checkSubscription,
+    checkoutSession,
+    allDocs,
+    uploadDoc,
+    docSummarize,
+    docSimplify,
+    profileUpdate,
+    singleDoc
+};

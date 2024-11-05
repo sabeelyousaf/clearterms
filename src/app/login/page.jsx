@@ -6,9 +6,11 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
 import { login } from '@/api/routes'; // Replace with your API route
+import { ThreeDots } from 'react-loader-spinner'; // Import loader spinner component
 
 export default function Signup() {
   const [form, setForm] = useState({ email: '', password: '' });
+  const [loading, setLoading] = useState(false); // Loading state
   const router = useRouter(); // Initialize router instance
 
   // Check for token and redirect to dashboard if it exists
@@ -25,6 +27,7 @@ export default function Signup() {
 
   const handleSignin = async (e) => {
     e.preventDefault();
+    setLoading(true); // Set loading to true
 
     try {
       const response = await axios.post(login, form); // Replace with your API route
@@ -76,6 +79,8 @@ export default function Signup() {
         progress: undefined,
         theme: 'light',
       });
+    } finally {
+      setLoading(false); // Set loading to false when done
     }
   };
 
@@ -109,9 +114,13 @@ export default function Signup() {
           </div>
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white p-3 rounded-lg font-bold hover:bg-indigo-500"
+            className="w-full bg-indigo-600 text-white p-3 rounded-lg font-bold hover:bg-indigo-500 flex items-center justify-center" // Added flex styles
           >
-            Login
+            {loading ? (
+              <ThreeDots height="20" width="20" color="#ffffff" /> // Spinner component
+            ) : (
+              'Login'
+            )}
           </button>
         </form>
         <p className="mt-6 text-center text-sm">
