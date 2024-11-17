@@ -100,7 +100,6 @@ const PricingSection = () => {
                     >
                         <div className='flex flex-col justify-between h-full'>
                             <div>
-
                         <h3 className="text-2xl font-bold mb-4">Yearly Plan</h3>
                         <p className="mb-4">Unlimited uploads and extension uses with priority support.</p>
                         <p className="font-bold text-lg mb-8">$75/month</p>
