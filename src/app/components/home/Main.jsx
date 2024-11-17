@@ -76,36 +76,37 @@ export default function Main() {
                 <div className="max-w-screen-xl mx-auto md:px-0 px-3">
                     <h2 className="text-4xl font-bold text-center mb-12">How It Works</h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-                        {/* Feature 1 */}
-                        <motion.div
-                            className="text-center px-5 py-10 bg-white shadow-xl rounded-2xl transition transform hover:scale-105"
-                            whileHover={{ scale: 1.05 }}
-                        >
-                            <FaFileAlt className="text-indigo-600 mx-auto mb-6 text-4xl" /> {/* React Icon */}
-                            <h3 className="text-xl font-semibold mb-4">Click to Simplify & Summarize </h3>
-                            <p>Quickly summarize legal texts like Terms of Service and Privacy Policies with one click.</p>
-                        </motion.div>
+    {/* Feature 1 */}
+    <motion.div
+        className="text-center px-5 py-10 bg-white shadow-xl rounded-2xl   group hover:bg-indigo-600"
+        whileHover={{ scale: 1.05 }}
+    >
+        <FaFileAlt className="text-indigo-600 mx-auto mb-6 text-4xl group-hover:text-white transition duration-300" /> {/* React Icon */}
+        <h3 className="text-xl font-semibold mb-4 text-gray-800 group-hover:text-white transition duration-300">Click to Simplify & Summarize</h3>
+        <p className="text-gray-600 group-hover:text-indigo-100 transition duration-300">Quickly summarize legal texts like Terms of Service and Privacy Policies with one click.</p>
+    </motion.div>
 
-                        {/* Feature 2 */}
-                        <motion.div
-                            className="text-center rounded-2xl px-5 py-10 bg-white shadow-xl transition transform hover:scale-105"
-                            whileHover={{ scale: 1.05 }}
-                        >
-                            <FaUpload className="text-indigo-600 mx-auto mb-6 text-4xl" /> {/* React Icon */}
-                            <h3 className="text-xl font-semibold mb-4">Upload Documents</h3>
-                            <p>Upload and simplify legal documents directly from the website.</p>
-                        </motion.div>
+    {/* Feature 2 */}
+    <motion.div
+        className="text-center px-5 py-10 bg-white shadow-xl rounded-2xl transition transform hover:scale-105 group hover:bg-indigo-600"
+        whileHover={{ scale: 1.05 }}
+    >
+        <FaUpload className="text-indigo-600 mx-auto mb-6 text-4xl group-hover:text-white transition duration-300" /> {/* React Icon */}
+        <h3 className="text-xl font-semibold mb-4 text-gray-800 group-hover:text-white transition duration-300">Upload Documents</h3>
+        <p className="text-gray-600 group-hover:text-indigo-100 transition duration-300">Upload and simplify legal documents directly from the website.</p>
+    </motion.div>
 
-                        {/* Feature 3 */}
-                        <motion.div
-                            className="text-center rounded-2xl px-5 py-10 bg-white shadow-xl transition transform hover:scale-105"
-                            whileHover={{ scale: 1.05 }}
-                        >
-                            <FaGlobe className="text-indigo-600 mx-auto mb-6 text-4xl" /> {/* React Icon */}
-                            <h3 className="text-xl font-semibold mb-4">Language Translation</h3>
-                            <p>Translate the simplified document into multiple languages with ease.</p>
-                        </motion.div>
-                    </div>
+    {/* Feature 3 */}
+    <motion.div
+        className="text-center px-5 py-10 bg-white shadow-xl rounded-2xl transition transform hover:scale-105 group hover:bg-indigo-600"
+        whileHover={{ scale: 1.05 }}
+    >
+        <FaGlobe className="text-indigo-600 mx-auto mb-6 text-4xl group-hover:text-white transition duration-300" /> {/* React Icon */}
+        <h3 className="text-xl font-semibold mb-4 text-gray-800 group-hover:text-white transition duration-300">Language Translation</h3>
+        <p className="text-gray-600 group-hover:text-indigo-100 transition duration-300">Translate the simplified document into multiple languages with ease.</p>
+    </motion.div>
+</div>
+
                 </div>
             </motion.section>
         </div>

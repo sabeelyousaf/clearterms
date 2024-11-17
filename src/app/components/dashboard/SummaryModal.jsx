@@ -1,15 +1,15 @@
-"use client";
 import React, { useState } from 'react';
 import { motion } from 'framer-motion'; 
 import { FaTimes } from 'react-icons/fa'; 
 import axios from 'axios'; 
-import { docSummarize } from '@/api/routes';
-import { marked } from 'marked'; // Import marked
+import { docSummarize, downloadPdf, downloadDocx, generatePDF, generateDocx } from '@/api/routes'; // Update this with your actual route imports
+import { marked } from 'marked';
 
 const SummaryModal = ({ isOpen, onClose, summary, documentId }) => {
   const [selectedLanguage, setSelectedLanguage] = useState('en');
   const [loading, setLoading] = useState(false); 
   const [translatedSummary, setTranslatedSummary] = useState('');
+  const [selectedDownloadType, setSelectedDownloadType] = useState('');
 
   const handleTranslate = async () => {
     setLoading(true); 
@@ -26,10 +26,8 @@ const SummaryModal = ({ isOpen, onClose, summary, documentId }) => {
         },
       });
 
-      // Assuming the response contains a 'summary' field
       const summaryText = response.data.summary || 'No summary available';
-      setTranslatedSummary(summaryText); // Set the raw Markdown text
-
+      setTranslatedSummary(summaryText); 
     } catch (error) {
       console.error(error);
       setTranslatedSummary('Error in translation. Please try again.');
@@ -38,7 +36,43 @@ const SummaryModal = ({ isOpen, onClose, summary, documentId }) => {
     }
   };
 
-  // Convert Markdown to HTML
+  const handleDownload = async () => {
+    if (!selectedDownloadType) {
+      alert("Please select a download type.");
+      return;
+    }
+    
+    setLoading(true); 
+    const token = sessionStorage.getItem("token");
+    const apiUrl = selectedDownloadType === "pdf" ? generatePDF : generateDocx;
+
+    try {
+      const response = await axios.post(apiUrl, {
+        content: translatedSummary || summary,
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        responseType: 'blob', // Important for file download
+      });
+
+      // Create a link to download the file
+      const blob = new Blob([response.data], { type: response.headers['content-type'] });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `summary.${selectedDownloadType}`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+    } catch (error) {
+      console.error("Error downloading file:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const getHtmlFromMarkdown = (markdown) => {
     return marked(markdown);
   };
@@ -89,7 +123,6 @@ const SummaryModal = ({ isOpen, onClose, summary, documentId }) => {
             <option value="en">English</option>
             <option value="fr">French</option>
             <option value="es">Spanish</option>
-            {/* Add more languages as needed */}
           </select>
           <button
             className="bg-blue-500 text-white py-1 px-3 rounded ml-2"
@@ -97,6 +130,26 @@ const SummaryModal = ({ isOpen, onClose, summary, documentId }) => {
             disabled={loading}
           >
             Translate
+          </button>
+        </div>
+        
+        {/* Download Options */}
+        <div className="mt-3">
+          <select
+            className="border rounded py-1 px-2"
+            value={selectedDownloadType}
+            onChange={(e) => setSelectedDownloadType(e.target.value)}
+          >
+            <option value="" disabled>Choose Download Type</option>
+            <option value="pdf">PDF</option>
+            <option value="docx">DOCX</option>
+          </select>
+          <button
+            className="bg-blue-500 text-white py-1 px-3 rounded ml-2"
+            onClick={handleDownload}
+            disabled={loading || !selectedDownloadType}
+          >
+            Download
           </button>
         </div>
       </motion.div>

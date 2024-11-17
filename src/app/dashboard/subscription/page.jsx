@@ -1,28 +1,23 @@
-"use client";
+"use client"
 import { checkoutSession, checkSubscription } from "@/api/routes";
 import Sidebar from "@/app/components/dashboard/Sidebar";
-import { CheckIcon } from "@heroicons/react/outline";
+import { SubscriptionPlan } from "@/app/components/SubscriptionPlan";
+import { ActiveSubscription } from "@/app/components/ActiveSubscription";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
 const stripePromise = loadStripe("pk_test_51MZZceFROfbArqV2MpRbFWhhs9PhHfKSuInwSmq4PfBT2XszIzDLzuPBAsDFxlZU82xfgJE0xCDMe4xQh76hQvpg00U4Z6XY96");
 
-const Subscription = () => {
-    const [subscription, setSubscription] = useState(false);
-    const [loading, setLoading] = useState(true); // Step 1: Set initial loading state to true
+const planFeatures = {
+    yearly: ["Advanced simplification options", "Unlimited document uploads", "Analyze complex documents","Translation into multiple languages","Saved documents with cloud access","Download in multiple formats","Revision history access","Priority support","Bulk document processing"],
+    monthly: ["Advanced simplification options", "Unlimited document uploads", "Analyze complex documents","Translation into multiple languages","Saved documents with cloud access","Download in multiple formats","Revision history access","Priority support","Bulk document processing"],
+    daily: ["Advanced simplification options", "Unlimited document uploads", "Analyze complex documents","Translation into multiple languages","Saved documents with cloud access","Download in multiple formats","Revision history access","Priority support","Bulk document processing"]
+};
 
-    const premiumFeatures = [
-        "Advanced simplification options",
-        "Unlimited document uploads",
-        "Analyze complex documents",
-        "Translation into multiple languages",
-        "Saved documents with cloud access",
-        "Download in multiple formats",
-        "Revision history access",
-        "Priority support",
-        "Bulk document processing",
-    ];
+const Subscription = () => {
+    const [subscription, setSubscription] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const fetchSubscription = async () => {
         const token = sessionStorage.getItem("token");
@@ -33,14 +28,11 @@ const Subscription = () => {
                     "Content-Type": "application/json",
                 },
             });
-
-            console.log(response);
-            const subscriptionStatus = response.data.subscription;
-            setSubscription(subscriptionStatus);
+            setSubscription(response.data.subscription);
         } catch (error) {
             console.error("Error fetching subscription:", error);
         } finally {
-            setLoading(false); // Step 2: Set loading to false after the API call
+            setLoading(false);
         }
     };
 
@@ -48,23 +40,16 @@ const Subscription = () => {
         fetchSubscription();
     }, []);
 
-    const handleCheckout = async () => {
+    const handleCheckout = async (price, title) => {
         const stripe = await stripePromise;
-
-        if (!stripe) {
-            console.error("Stripe.js has not loaded yet.");
-            return;
-        }
-
-        const price = 9.99;
+        if (!stripe) return;
         const token = sessionStorage.getItem("token");
-
-        setLoading(true); // Set loading to true while processing checkout
+        setLoading(true);
 
         try {
             const response = await axios.post(
                 checkoutSession,
-                { price },
+                { price, title },
                 {
                     headers: {
                         "Authorization": `Bearer ${token}`,
@@ -73,84 +58,59 @@ const Subscription = () => {
                 }
             );
 
-            if (response.data && response.data.id) {
+            if (response.data?.id) {
                 const { error } = await stripe.redirectToCheckout({ sessionId: response.data.id });
-                if (error) {
-                    console.warn("Error during checkout:", error);
-                }
+                if (error) console.warn("Error during checkout:", error);
             } else {
                 console.error("Invalid response from server:", response.data);
             }
         } catch (error) {
             console.error("Error creating checkout session:", error);
         } finally {
-            setLoading(false); // Set loading to false after the API call is complete
+            setLoading(false);
         }
     };
+
+    const subscriptionTypes = subscription.map(sub => sub.type);
 
     return (
         <div className="flex">
             <Sidebar />
             <div className="p-3 md:p-8 w-full">
                 <h1 className="text-3xl font-bold mb-6">Subscription Plans</h1>
-
-                {loading ? ( // Step 3: Show spinner while loading
-                    <div className="flex items-center justify-center h-64">
-                        <svg
-                            className="animate-spin h-10 w-10 text-indigo-600"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                        >
-                            <circle className="opacity-25" cx="12" cy="12" r="10" fill="currentColor" />
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 000 8v4a8 8 0 01-8-8z" />
-                        </svg>
-                    </div>
-                ) : subscription ? (
-                    <p className="text-lg font-semibold text-green-600">
-                        You already have an active subscription.
-                    </p>
-                ) : (
-                    <div className="bg-white max-w-[400px] md:h-[590px] px-5 py-8 rounded-3xl shadow-xl">
-                        <div className="flex flex-col justify-between h-full">
-                            <div>
-                                <h3 className="text-2xl font-bold mb-4">Premium Plan</h3>
-                                <p className="mb-4">
-                                    Unlimited uploads and extension uses with priority support.
-                                </p>
-                                <p className="font-bold text-lg mb-8">$9.99/month</p>
-
-                                <ul className="list-none mb-6">
-                                    {premiumFeatures.map((feature, index) => (
-                                        <li key={index} className="flex items-center mb-2">
-                                            <CheckIcon className="w-5 h-5 text-green-500 mr-2" />
-                                            <span>{feature}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                            <p
-                                onClick={handleCheckout}
-                                className={`bg-indigo-600 text-center text-white px-8 py-3 rounded-full font-bold cursor-pointer transition-transform transform hover:scale-105 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
-                            >
-                                {loading ? (
-                                    <span className="flex items-center justify-center">
-                                        <svg
-                                            className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <circle className="opacity-25" cx="12" cy="12" r="10" fill="currentColor" />
-                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 000 8v4a8 8 0 01-8-8z" />
-                                        </svg>
-                                        Processing...
-                                    </span>
-                                ) : (
-                                    "Upgrade Now"
-                                )}
-                            </p>
+                <div className="flex gap-4">
+                    {loading ? (
+                        <div className="flex items-center justify-center h-64">
+                            <svg className="animate-spin h-10 w-10 text-indigo-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <circle className="opacity-25" cx="12" cy="12" r="10" fill="currentColor" />
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 000 8v4a8 8 0 01-8-8z" />
+                            </svg>
                         </div>
-                    </div>
-                )}
+                    ) : (
+                        <>
+                            {subscriptionTypes.includes("daily") && (
+                                <ActiveSubscription title="Daily Plan" message="You have an active Daily subscription." features={planFeatures.daily} />
+                            )}
+                            {subscriptionTypes.includes("monthly") && (
+                                <ActiveSubscription title="Monthly Plan" message="You have an active Monthly subscription." features={planFeatures.monthly} />
+                            )}
+                            {subscriptionTypes.includes("yearly") && (
+                                <ActiveSubscription title="Yearly Plan" message="You have an active Yearly subscription." features={planFeatures.yearly} />
+                            )}
+
+                            {/* Only show subscription plans that are not already active */}
+                            {!subscriptionTypes.includes("daily") && (
+                                <SubscriptionPlan title="Daily Plan" price={4.99} features={planFeatures.daily} loading={loading} handleCheckout={() => handleCheckout(4.99, "24 Hours Plan")} />
+                            )}
+                            {!subscriptionTypes.includes("monthly") && (
+                                <SubscriptionPlan title="Monthly Plan" price={9.99} features={planFeatures.monthly} loading={loading} handleCheckout={() => handleCheckout(9.99, "Monthly Plan")} />
+                            )}
+                            {!subscriptionTypes.includes("yearly") && (
+                                <SubscriptionPlan title="Yearly Plan" price={75} features={planFeatures.yearly} loading={loading} handleCheckout={() => handleCheckout(75, "Yearly Plan")} />
+                            )}
+                        </>
+                    )}
+                </div>
             </div>
         </div>
     );

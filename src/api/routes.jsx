@@ -19,6 +19,9 @@ const uploadDoc = `${BASE_URL}/doc/upload`;
 const docSummarize = `${BASE_URL}/doc/summarize`;
 const docSimplify = `${BASE_URL}/doc/simplify`;
 
+//Generate PDF & DOCX
+const downloadContent = `${BASE_URL}/download-content`;
+
 export {
     login,
     register,
@@ -29,5 +32,6 @@ export {
     docSummarize,
     docSimplify,
     profileUpdate,
-    singleDoc
+    singleDoc,
+    downloadContent,
 };

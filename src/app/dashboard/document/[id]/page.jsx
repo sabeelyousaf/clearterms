@@ -1,69 +1,324 @@
 "use client";
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import Sidebar from '@/app/components/dashboard/Sidebar';
-import { singleDoc } from '@/api/routes';
 
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import Sidebar from "@/app/components/dashboard/Sidebar";
+import { FaArrowLeft, FaFileAlt, FaUpload } from "react-icons/fa";
+import { singleDoc, downloadContent } from "@/api/routes";
+import Link from "next/link";
 const DocumentDetails = ({ params }) => {
-  const { id } = params; // Get the document ID from the URL
-  const [documentContent, setDocumentContent] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+const { id } = params; // Get the document ID from the URL
+const [inputText, setInputText] = useState("");
+const [outputText, setOutputText] = useState("");
+const [isLoading, setIsLoading] = useState(false);
+const [selectedLanguage, setSelectedLanguage] = useState("english");
+const [languages, setLanguages] = useState([]);
+const [documentContent, setDocumentContent] = useState(null);
+const [error, setError] = useState(null); // State for errors
+const [selectedDownloadType, setSelectedDownloadType] = useState("");
+const [loading, setLoading] = useState(false);
+const [docName,SetdocName]= useState('');
 
-  useEffect(() => {
+useEffect(() => {
+    fetchDocumentContent();
+    populateLanguages();
+  }, []);
+
+  const handleDownload = async () => {
+    if (!selectedDownloadType) {
+      alert("Please select a download type.");
+      return;
+    }
+
+    setLoading(true);
     const token = sessionStorage.getItem("token");
+    const apiUrl = downloadContent;
 
-    const fetchDocumentContent = async () => {
-      try {
-        const response = await axios.get(`${singleDoc}/${id}`, {
+    try {
+      const response = await axios.post(
+        apiUrl,
+        {
+          content: outputText,
+          type: selectedDownloadType,
+        },
+        {
           headers: {
-            "Authorization": `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-      }); // Corrected API URL
-        
-        if (response.status === 200 && response.data.status === 200) {
-          
-          setDocumentContent(response.data.data); // Assuming 'data' holds the document content
-        } else {
-          setError(response.data.message || 'Failed to retrieve document content');
+          responseType: "blob", // Important for file download
         }
-      } catch (err) {
-        setError('An error occurred while fetching the document content');
-      } finally {
-        setLoading(false);
+      );
+      // Create a link to download the file
+      const blob = new Blob([response.data], {
+        type: response.headers["content-type"],
+      });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `summary.${selectedDownloadType}`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error downloading file:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getHtmlFromMarkdown = (markdown) => {
+    return marked(markdown);
+  };
+  
+  const fetchDocumentContent = async () => {
+    setIsLoading(true);
+    try {
+      const token = sessionStorage.getItem("token");
+      if (!token) {
+        setError("User is not authenticated.");
+        return;
       }
+
+      const response = await axios.get(singleDoc + "/" + id, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.status === 200 && response.data.status === 200) {
+        setDocumentContent(response.data.data); // Assuming 'data' holds the document content
+        SetdocName(response.data.name)
+      } else {
+        setError(
+          response.data.message || "Failed to retrieve document content"
+        );
+      }
+    } catch (err) {
+      setError("An error occurred while fetching the document content");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const populateLanguages = async () => {
+    const url =
+      "https://google-translate113.p.rapidapi.com/api/v1/translator/support-languages";
+    const options = {
+      method: "GET",
+      headers: {
+        "x-rapidapi-key": "c0e715f346msh31dbe89b46ca19ep1c9dafjsnc255484818dd",
+        "x-rapidapi-host": "google-translate113.p.rapidapi.com",
+      },
+    };
+    try {
+      const response = await fetch(url, options);
+      if (!response.ok) throw new Error("Failed to fetch languages");
+      const data = await response.json();
+      setLanguages(data.languages || []);
+    } catch (error) {
+      console.error("Error fetching languages:", error);
+    }
+  };
+
+  const handleTextChange = (e) => setInputText(e.target.value);
+
+
+  const handleLanguageChange = (e) => setSelectedLanguage(e.target.value);
+
+
+  const fetchData = async (url, options) => {
+    try {
+      const response = await fetch(url, options);
+      if (!response.ok) throw new Error("Network response was not ok");
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      return null;
+    }
+  };
+
+  const handleSummarize = async () => {
+    const url = "https://chatgpt-42.p.rapidapi.com/gpt4";
+    const options = {
+      method: "POST",
+      headers: {
+        "x-rapidapi-key": "455f35f29bmsh9904fd3cfaaaf35p1856acjsnf15b267343bb",
+        "x-rapidapi-host": "chatgpt-42.p.rapidapi.com",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        messages: [
+          {
+            role: "user",
+            content: `Summarize the following text: ${documentContent},language should be in ${selectedLanguage}`,
+          },
+        ],
+        web_access: false,
+      }),
+    };
+    setIsLoading(true);
+    const data = await fetchData(url, options);
+    setIsLoading(false);
+
+    if (data?.result) setOutputText(data.result);
+    else setOutputText("No summary available.");
+  };
+
+  const handleTranslate = async () => {
+    const url = "https://google-translator9.p.rapidapi.com/v2";
+    const options = {
+      method: "POST",
+      headers: {
+        "x-rapidapi-key": "a596b71e1cmsh581941e025369c6p1ec95fjsn07da0a85bf90",
+        "x-rapidapi-host": "google-translator9.p.rapidapi.com",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        q: outputText || inputText,
+        target: selectedLanguage,
+      }),
     };
 
-    fetchDocumentContent();
-  }, [id]);
+    setIsLoading(true);
+    const data = await fetchData(url, options);
+    setIsLoading(false);
+
+    if (data?.data?.translations?.[0]?.translatedText) {
+      setOutputText(data.data.translations[0].translatedText);
+    }
+  };
+
+  const handleSimplify = async () => {
+    const url = "https://chatgpt-42.p.rapidapi.com/gpt4";
+    const options = {
+      method: "POST",
+      headers: {
+        "x-rapidapi-key": "455f35f29bmsh9904fd3cfaaaf35p1856acjsnf15b267343bb",
+        "x-rapidapi-host": "chatgpt-42.p.rapidapi.com",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        messages: [
+          {
+            role: "user",
+            content: `Simplify the following text: ${documentContent}, language should be in ${selectedLanguage}`,
+          },
+        ],
+        web_access: false,
+      }),
+    };
+
+    setIsLoading(true);
+    const data = await fetchData(url, options);
+    setIsLoading(false);
+
+    if (data?.result) setOutputText(data.result);
+  };
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex h-screen">
       <Sidebar />
-      <div className="flex-1 pt-20 px-3 md:px-10 md:pt-10 bg-gray-100 overflow-auto">
-        <h1 className="text-3xl font-bold">Document {id}</h1>
+      <div className="md:flex-1 pt-20 md:px-10 px-3 md:pt-10 bg-gray-100 overflow-auto">
+        <div className="mb-8">
+         
+          <div className="text-3xl font-bold text-gray-700 flex flex-row gap-4"> <Link href="/dashboard" >
+          <FaArrowLeft 
+  className="mt-2 hover:scale-110 transition-transform duration-200" 
+  size={20} 
+/>
+          </Link>  <h1> {docName}</h1></div>
+          <p className="text-gray-600 mt-2">
+            Here you can simplify or summarize your content
+          </p>
+        </div>
 
-        {loading ? (
-          <p>Loading document content...</p>
-        ) : error ? (
-          <p className="text-red-500">{error}</p>
-        ) : (
-          <div>
-            <p>
-              <strong>Date Uploaded:</strong> {new Date().toLocaleDateString()}
-            </p>
-            <h2 className="text-xl font-semibold mt-4">Content</h2>
-            <div
-              dangerouslySetInnerHTML={{ __html: documentContent }}
-              className="whitespace-pre-wrap"
-            />
+        {error && <p className="text-red-500">{error}</p>}
 
+        <div className="md:flex-1 pt-4 md:px-10 px-3 overflow-auto flex justify-center items-center">
+          <div className="rounded-lg p-2 w-full">
+            <div className="flex space-x-6 mb-4">
+              <textarea
+                className="w-1/2 p-4 border rounded-lg resize-none focus:outline-none"
+                placeholder="Enter text here..."
+                value={documentContent || inputText}
+                onChange={handleTextChange}
+                style={{ height: "450px" }}
+              ></textarea>
+              <textarea
+                className="w-1/2 p-4 border rounded-lg resize-none focus:outline-none"
+                value={outputText}
+                readOnly
+                placeholder="Output will appear here..."
+              ></textarea>
+            </div>
+            <div className="flex justify-center space-x-4 mb-4">
+              <button
+                className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none flex items-center"
+                onClick={handleSimplify}
+                disabled={isLoading}
+              >
+                {isLoading ? <div className="loader mr-2"></div> : "Simplify"}
+              </button>
+              <button
+                className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none flex items-center"
+                onClick={handleSummarize}
+                disabled={isLoading}
+              >
+                {isLoading ? <div className="loader mr-2"></div> : "Summarize"}
+              </button>
+              <div className="mt-3"></div>
+            </div>
+            <div className="flex justify-center mt-4">
+              <label
+                htmlFor="language"
+                className="mr-2 mt-2 font-medium text-gray-700"
+              >
+                Select Language:
+              </label>
+              <select
+                id="language"
+                className="p-2 border rounded-lg focus:outline-none "
+                value={selectedLanguage}
+                onChange={handleLanguageChange}
+              >
+                <option value="en">English</option>
+                <option value="fr">French</option>
+                <option value="de">German</option>
+                <option value="ru">Russian</option>
+                {languages.map((language) => (
+                  <option key={language} value={language}>
+                    {language}
+                  </option>
+                ))}
+              </select>
+              <select
+                className="border rounded py-1 px-2 ms-4"
+                value={selectedDownloadType}
+                onChange={(e) => setSelectedDownloadType(e.target.value)}
+              >
+                <option value="" disabled>
+                  Choose Download Type
+                </option>
+                <option value="pdf">PDF</option>
+                <option value="docx">DOCX</option>
+                <option value="txt">TXT</option>
+                <option value="rtf">RTF</option>
+              </select>
+              <button
+                className="bg-blue-500 text-white py-1 px-3 rounded ml-2"
+                onClick={handleDownload}
+                disabled={loading || !selectedDownloadType}
+              >
+                Download
+              </button>
+            </div>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
+
 };
 
 export default DocumentDetails;

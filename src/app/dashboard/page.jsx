@@ -19,7 +19,7 @@ const Dashboard = () => {
   const [documentId, setDocumentId] = useState(null);
   const [isLoading, setIsLoading] = useState(false); // State for preloader
   const [uploadSuccess, setUploadSuccess] = useState(''); // State for success message
-
+  const [username,SetUsername]=useState('');
   const router = useRouter();
 
   const fetchSubscription = async () => {
@@ -59,6 +59,7 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
+    SetUsername(sessionStorage.getItem('name'));
     fetchDocs();
     fetchSubscription();
   }, []);
@@ -130,7 +131,7 @@ const Dashboard = () => {
       <div className="md:flex-1 pt-20 md:px-10 px-3 md:pt-10 bg-gray-100 overflow-auto">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-700">
-            Welcome, Mark!
+            Welcome, {username}!
           </h1>
           <p className="text-gray-600 mt-2">
             Here are your recent documents and activities.
@@ -148,7 +149,7 @@ const Dashboard = () => {
           <p className="text-gray-500 mt-2">
             Drag & Drop your files or click to upload.
           </p>
-          {subscription ? (
+          {subscription.length > 0 ? (
             <div className="mt-4">
               <input
                 type="file"
@@ -204,7 +205,7 @@ const Dashboard = () => {
               <tbody>
                 {docs.map((file, index) => (
                   <tr key={index} className="border-t">
-                    <td className="py-2">Document {index}</td>
+                    <td className="py-2">{file.document}</td>
                     <td className="py-2">{formatDate(file.created_at)}</td> {/* Format the date */}
                     <td className="py-2">
                       <button
@@ -213,7 +214,7 @@ const Dashboard = () => {
                       >
                         View
                       </button>
-                      <button
+                      {/* <button
                         className="bg-blue-500 text-white py-1 md:px-3 rounded px-1 mr-2"
                         onClick={() => handleSummarize(file.id)}
                       >
@@ -224,7 +225,7 @@ const Dashboard = () => {
                         onClick={() => handleSimplify(file.id)}
                       >
                         Simplify
-                      </button>
+                      </button> */}
                     </td>
                   </tr>
                 ))}
@@ -235,7 +236,7 @@ const Dashboard = () => {
 
         {/* Summary Modal */}
       
- <SummaryModal
+     {/* <SummaryModal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
         summary={summary}
@@ -248,7 +249,7 @@ const Dashboard = () => {
         simplify={simplify}
         documentId={documentId} // Pass document ID as prop
         onTranslate={handleTranslate}
-      />
+      /> */}
       </div>
     </div>
   );

@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { AiOutlineMenu } from 'react-icons/ai'; // Icon for mobile menu
 import { motion } from 'framer-motion';
 import { AiOutlineUser } from 'react-icons/ai'; // Profile icon
-
+import logo from './../../../public/logo.png'
 const Header = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -27,13 +27,13 @@ const Header = () => {
 
     return (
         <div>
-            <header className="bg-white shadow-md fixed w-full top-0 z-50">
+            <header className="bg-white shadow-md fixed w-full top-0 z-50 py-3">
                 <div className="max-w-screen-xl mx-auto flex justify-between items-center px-4 md:px-8">
-                    <Image src={'/logo.jpeg'} alt='Logo' width={1080} height={1080} className='w-32 object-contain bg-blend-overlay' />
+                    <Image src={logo} alt='Logo' width={200} className=' object-contain bg-blend-overlay' />
                     <nav className="hidden md:flex gap-x-8 items-center">
-                        <Link href="#home"><p className="hover:text-indigo-600">Home</p></Link>
-                        <Link href="#features"><p className="hover:text-indigo-600">Features</p></Link>
-                        <Link href="#pricing"><p className="hover:text-indigo-600">Pricing</p></Link>
+                        <Link href="/#home"><p className="hover:text-indigo-600">Home</p></Link>
+                        <Link href="/#features"><p className="hover:text-indigo-600">Features</p></Link>
+                        <Link href="/#pricing"><p className="hover:text-indigo-600">Pricing</p></Link>
                         {!isLoggedIn ? (
                             <Link href="/login"><p className="bg-indigo-600 text-white px-6 py-3 rounded-full">Login</p></Link>
                         ) : (

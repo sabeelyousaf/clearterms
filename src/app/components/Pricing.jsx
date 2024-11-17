@@ -3,16 +3,7 @@ import { motion } from 'framer-motion';
 import { CheckIcon } from '@heroicons/react/outline'; // Import check icon from Heroicons
 import Link from 'next/link';
 
-const freeFeatures = [
-    "Simplify legal text on webpages",
-    "Upload and simplify 1-2 documents/month",
-    "Real-time text summarization",
-    "Basic translation into 1-2 languages",
-    "No saved documents",
-    "Basic download options"
-];
-
-const premiumFeatures = [
+const features = [
     "Advanced simplification options",
     "Unlimited document uploads",
     "Analyze complex documents",
@@ -24,11 +15,14 @@ const premiumFeatures = [
     "Bulk document processing"
 ];
 
+
+
+
 const PricingSection = () => {
     return (
         <motion.section
             id="pricing"
-            className="bg-gray-50 py-20"
+            className="py-20"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
@@ -39,7 +33,7 @@ const PricingSection = () => {
                     {/* Free Plan */}
                 
 
-                    {/* Premium Plan */}
+                    {/* Dail Plan */}
                     <motion.div
                         className="bg-white max-w-[400px] md:h-[590px] px-5 py-8 rounded-3xl shadow-xl transition-transform transform hover:scale-105"
                         whileHover={{ scale: 1.05 }}
@@ -47,13 +41,73 @@ const PricingSection = () => {
                         <div className='flex flex-col justify-between h-full'>
                             <div>
 
-                        <h3 className="text-2xl font-bold mb-4">Premium Plan</h3>
+                        <h3 className="text-2xl font-bold mb-4">24 Hours Plan</h3>
+                        <p className="mb-4">Unlimited uploads and extension uses with priority support.</p>
+                        <p className="font-bold text-lg mb-8">$4.99/month</p>
+
+                        {/* Features List */}
+                        <ul className="list-none mb-6">
+                            {features.map((feature, index) => (
+                                <li key={index} className="flex items-center mb-2 text-left">
+                                    <CheckIcon className="w-5 h-5 text-green-500 mr-2" />
+                                    <span>{feature}</span>
+                                </li>
+                            ))}
+                        </ul>
+                            </div>
+                        <Link href="/dashboard/subscription">
+                            <p className="bg-indigo-600 text-white px-8 py-3 rounded-full font-bold transition-transform transform hover:scale-105">
+                                Upgrade Now
+                            </p>
+                        </Link>
+                        </div>
+
+                    </motion.div>
+                    {/* Monthly */}
+                    <motion.div
+                        className="bg-white max-w-[400px] md:h-[590px] px-5 py-8 rounded-3xl shadow-xl transition-transform transform hover:scale-105"
+                        whileHover={{ scale: 1.05 }}
+                    >
+                        <div className='flex flex-col justify-between h-full'>
+                            <div>
+
+                        <h3 className="text-2xl font-bold mb-4">Monthly Plan</h3>
                         <p className="mb-4">Unlimited uploads and extension uses with priority support.</p>
                         <p className="font-bold text-lg mb-8">$9.99/month</p>
 
                         {/* Features List */}
                         <ul className="list-none mb-6">
-                            {premiumFeatures.map((feature, index) => (
+                            {features.map((feature, index) => (
+                                <li key={index} className="flex items-center mb-2 text-left">
+                                    <CheckIcon className="w-5 h-5 text-green-500 mr-2" />
+                                    <span>{feature}</span>
+                                </li>
+                            ))}
+                        </ul>
+                            </div>
+                        <Link href="/dashboard/subscription">
+                            <p className="bg-indigo-600 text-white px-8 py-3 rounded-full font-bold transition-transform transform hover:scale-105">
+                                Upgrade Now
+                            </p>
+                        </Link>
+                        </div>
+
+                    </motion.div>
+                    {/* Yearly */}
+                    <motion.div
+                        className="bg-white max-w-[400px] md:h-[590px] px-5 py-8 rounded-3xl shadow-xl transition-transform transform hover:scale-105"
+                        whileHover={{ scale: 1.05 }}
+                    >
+                        <div className='flex flex-col justify-between h-full'>
+                            <div>
+
+                        <h3 className="text-2xl font-bold mb-4">Yearly Plan</h3>
+                        <p className="mb-4">Unlimited uploads and extension uses with priority support.</p>
+                        <p className="font-bold text-lg mb-8">$75/month</p>
+
+                        {/* Features List */}
+                        <ul className="list-none mb-6">
+                            {features.map((feature, index) => (
                                 <li key={index} className="flex items-center mb-2 text-left">
                                     <CheckIcon className="w-5 h-5 text-green-500 mr-2" />
                                     <span>{feature}</span>

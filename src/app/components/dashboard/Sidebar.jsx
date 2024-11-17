@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation'; // Correct import for Next.js
 import { FaHome, FaCog, FaSignOutAlt, FaFileInvoice, FaBars, FaTimes, FaArrowRight } from 'react-icons/fa'; // Importing icons
 import { useState } from 'react'; // Import useState to handle the sidebar toggle
-
+import logo from '../../../../public/logo-2.png'
 const Sidebar = () => {
 
   const router = useRouter(); // Using the router for current path
@@ -33,7 +33,7 @@ const Sidebar = () => {
     <>
       {/* Hamburger menu for mobile */}
       <div className="lg:hidden p-4 bg-primary text-white fixed w-full flex justify-between">
-        <Image src={'/logo.jpeg'} alt='Logo' width={50} height={50} className='w-12' />
+        <Image src={logo} alt='Logo' width={150}    />
         <button onClick={toggleSidebar}>
           {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
         </button>
@@ -43,7 +43,7 @@ const Sidebar = () => {
       <div className={`h-screen w-64 bg-primary text-white fixed transition-transform duration-300 z-50 
         ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 lg:static`}>
         <div className='px-6'>
-          <Image src={'/logo.jpeg'} alt='Logo' width={1080} height={1080} className='w-32 ' />
+          <Image src={logo} alt='Logo' width={170}  className=' mt-5 ' />
         </div>
         <nav className="mt-4">
           <ul>
@@ -66,8 +66,8 @@ const Sidebar = () => {
             <li className="p-4 flex items-center mt-auto hover:bg-indigo-400">
               <FaSignOutAlt className="mr-2" />
               <a onClick={handleLogout} className="text-white cursor-pointer">
-        Logout
-      </a>
+              Logout
+              </a>
             </li>
           </ul>
         </nav>
