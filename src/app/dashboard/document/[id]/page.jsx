@@ -139,6 +139,11 @@ useEffect(() => {
   };
 
   const handleSummarize = async () => {
+    // Get the selected text, if any
+    const selectedText = window.getSelection().toString();
+  
+    // Use selected text if available, otherwise fall back to the entire document content
+    const content = selectedText || documentContent;  // Replace with actual full content
     const url = "https://chatgpt-42.p.rapidapi.com/gpt4";
     const options = {
       method: "POST",
@@ -151,18 +156,21 @@ useEffect(() => {
         messages: [
           {
             role: "user",
-            content: `Summarize the following text: ${documentContent},language should be in ${selectedLanguage}`,
+            content: `Act as a document summarizer and provide a detailed summary of the following legal document, highlighting the most important clauses, obligations, and key terms. Format the summary in a clear and structured way, suitable for legal professionals, and ensure any critical legal nuances are retained. Include explanations where necessary to ensure the core concepts are well understood: ${content}. Language should be in ${selectedLanguage}.`,
           },
         ],
         web_access: false,
       }),
     };
+  
     setIsLoading(true);
     const data = await fetchData(url, options);
     setIsLoading(false);
-
-    if (data?.result) setOutputText(data.result);
-    else setOutputText("No summary available.");
+  
+    if (data?.result){
+      const cleanedText = data.result.replace(/[\*#]/g, "").replace(/---/g, "");
+      setOutputText(cleanedText);
+    } 
   };
 
   const handleTranslate = async () => {
@@ -190,6 +198,11 @@ useEffect(() => {
   };
 
   const handleSimplify = async () => {
+    // Get the selected text, if any
+    const selectedText = window.getSelection().toString();
+  
+    // Use selected text if available, otherwise fall back to the entire document content
+    const content = selectedText || documentContent;  // Replace with actual full content
     const url = "https://chatgpt-42.p.rapidapi.com/gpt4";
     const options = {
       method: "POST",
@@ -202,18 +215,21 @@ useEffect(() => {
         messages: [
           {
             role: "user",
-            content: `Simplify the following text: ${documentContent}, language should be in ${selectedLanguage}`,
+            content: `Act as a document simplifier and simplify the following legal document by translating the complex legal language into plain, everyday English. Ensure that the key terms and obligations are preserved but make the text easier to understand for someone without a legal background: ${content}. Language should be in ${selectedLanguage}.`,
           },
         ],
         web_access: false,
       }),
     };
-
+  
     setIsLoading(true);
     const data = await fetchData(url, options);
     setIsLoading(false);
-
-    if (data?.result) setOutputText(data.result);
+  
+    if (data?.result){
+      const cleanedText = data.result.replace(/[\*#]/g, "").replace(/---/g, "");
+      setOutputText(cleanedText);
+    } 
   };
 
   return (
