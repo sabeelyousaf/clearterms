@@ -4,7 +4,9 @@ const BASE_URL = "http://127.0.0.1:8000/api";
 // Auth
 const login = `${BASE_URL}/login`;
 const register = `${BASE_URL}/register`;
+const resetPassword = `${BASE_URL}/reset-password`;
 const profileUpdate = `${BASE_URL}/profile-update`;
+const forgotPassword = `${BASE_URL}/forgot-password`;
 
 // Stripe
 const checkSubscription = `${BASE_URL}/check-subscription`;
@@ -34,4 +36,6 @@ export {
     profileUpdate,
     singleDoc,
     downloadContent,
+    forgotPassword,
+    resetPassword
 };

@@ -101,6 +101,7 @@ export default function Signup() {
               onChange={handleInputChange}
             />
           </div>
+        
           <div className="mb-6">
             <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-700">Password</label>
             <input
@@ -123,6 +124,12 @@ export default function Signup() {
             )}
           </button>
         </form>
+        <div className='mb-6'>
+          <p className="mt-6 text-center text-sm">
+          <Link href="/forgot-password" className="text-indigo-600 font-bold">Forgot Password</Link>
+        </p>
+          </div>
+
         <p className="mt-6 text-center text-sm">
           Don&apos;t have an account? <Link href="/signup" className="text-indigo-600 font-bold">Signup</Link>
         </p>

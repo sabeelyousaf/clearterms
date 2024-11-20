@@ -1,26 +1,27 @@
 "use client";
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation'; 
-import Sidebar from '@/app/components/dashboard/Sidebar';
-import { FaFileAlt, FaUpload } from 'react-icons/fa';
-import SummaryModal from '../components/dashboard/SummaryModal';
-import SimplifyModal from '../components/dashboard/SimplifyModal';
-import { allDocs, checkSubscription, uploadDoc } from '@/api/routes';
-import axios from 'axios';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import Sidebar from "@/app/components/dashboard/Sidebar";
+import { FaArrowRight, FaFileAlt, FaUpload } from "react-icons/fa";
+import { allDocs, checkSubscription, uploadDoc } from "@/api/routes";
+import axios from "axios";
+import Link from "next/link";
 
 const Dashboard = () => {
   const [files, setFiles] = useState([]);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalSimplifyOpen, setModalSimplifyOpen] = useState(false);
-  const [summary, setSummary] = useState('');
-  const [simplify, setSimplify] = useState('');
   const [subscription, setSubscription] = useState(false);
-  const [docs, setDocs] = useState([]); 
-  const [documentId, setDocumentId] = useState(null);
-  const [isLoading, setIsLoading] = useState(false); // State for preloader
-  const [uploadSuccess, setUploadSuccess] = useState(''); // State for success message
-  const [username,SetUsername]=useState('');
+  const [docs, setDocs] = useState([]);
+  const [username, setUsername] = useState("");
+  const [isLoading, setIsLoading] = useState(false); // File upload loader
+  const [uploadSuccess, setUploadSuccess] = useState(""); // Success message
+  const [isCheckingSubscription, setIsCheckingSubscription] = useState(true); // Subscription check loader
   const router = useRouter();
+
+
+
+  const handleViewDocument = (index) => {
+    router.push(`/dashboard/document/${index}`); 
+  };
 
   const fetchSubscription = async () => {
     const token = sessionStorage.getItem("token");
@@ -34,6 +35,8 @@ const Dashboard = () => {
       setSubscription(response.data.subscription);
     } catch (error) {
       console.error("Error fetching subscription:", error);
+    } finally {
+      setIsCheckingSubscription(false); // Hide subscription loader
     }
   };
 
@@ -41,7 +44,6 @@ const Dashboard = () => {
     const options = { day: '2-digit', month: 'short', year: 'numeric' };
     return new Date(dateString).toLocaleDateString('en-GB', options).replace(',', ''); // Use en-GB to get 'dd mmm yyyy' format
   };
-  
   const fetchDocs = async () => {
     const token = sessionStorage.getItem("token");
     try {
@@ -51,17 +53,20 @@ const Dashboard = () => {
           "Content-Type": "application/json",
         },
       });
-      const alldocs = response.data.data.data;
-      setDocs(alldocs);
+      setDocs(response.data.data.data);
     } catch (error) {
       console.error("Error fetching docs:", error);
     }
   };
 
   useEffect(() => {
-    SetUsername(sessionStorage.getItem('name'));
-    fetchDocs();
+    const firstName = sessionStorage.getItem("first_name") || "";
+    const lastName = sessionStorage.getItem("last_name") || "";
+    setUsername(`${firstName} ${lastName}`.trim());
+
+    // Fetch subscription and documents
     fetchSubscription();
+    fetchDocs();
   }, []);
 
   const handleFileUpload = async (e) => {
@@ -70,9 +75,7 @@ const Dashboard = () => {
 
     const formData = new FormData();
     const token = sessionStorage.getItem("token");
-    uploadedFiles.forEach((file) => {
-      formData.append('documents[]', file);
-    });
+    uploadedFiles.forEach((file) => formData.append("documents[]", file));
 
     setIsLoading(true); // Show preloader
 
@@ -80,111 +83,94 @@ const Dashboard = () => {
       const response = await axios.post(uploadDoc, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
         },
       });
-
       if (response.status === 200) {
-        console.log('Documents uploaded successfully:', response.data.documents);
-        setUploadSuccess('Documents uploaded successfully!'); // Set success message
-        
-        // Re-fetch documents after upload
-        await fetchDocs(); // Call fetchDocs to update the documents list
-      } else {
-        console.error('Error uploading documents:', response.data.error);
+        setUploadSuccess("Documents uploaded successfully!");
+        await fetchDocs(); // Update documents list
       }
     } catch (error) {
-      console.error('Failed to upload documents:', error);
+      console.error("Failed to upload documents:", error);
     } finally {
       setIsLoading(false); // Hide preloader
-      // Remove success message after 5 seconds
-      setTimeout(() => {
-        setUploadSuccess('');
-      }, 5000);
+      setTimeout(() => setUploadSuccess(""), 5000);
     }
-  };
-
-  const handleViewDocument = (index) => {
-    router.push(`/dashboard/document/${index}`); 
-  };
-
-  const handleSummarize = (fileId) => {
-    setSummary(`This is a summary of the document: ${fileId}`);
-    setDocumentId(fileId);
-    setModalOpen(true);
-  };
-
-  const handleSimplify = (fileId) => {
-    setSimplify(`This is a simplified text of the document: ${fileId}`);
-    setDocumentId(fileId);
-    setModalSimplifyOpen(true);
-  };
-
-  const handleTranslate = (language) => {
-    alert(`Translating document to: ${language}`);
   };
 
   return (
     <div className="flex h-screen">
       <Sidebar />
-
       <div className="md:flex-1 pt-20 md:px-10 px-3 md:pt-10 bg-gray-100 overflow-auto">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-700">
-            Welcome, {username}!
-          </h1>
-          <p className="text-gray-600 mt-2">
-            Here are your recent documents and activities.
-          </p>
-        </div>
-
-        {/* Document Upload Section */}
-        <div className="bg-white shadow rounded-lg p-6 mb-8">
-          <div className="flex items-center">
-            <FaUpload className="text-primary text-2xl mr-3" />
-            <h2 className="text-xl font-semibold text-gray-700">
-              Upload Documents
-            </h2>
+        {isCheckingSubscription ? (
+          // Spinner while checking subscription
+          <div className="flex justify-center items-center h-screen">
+            <div className="loader"></div>
           </div>
-          <p className="text-gray-500 mt-2">
-            Drag & Drop your files or click to upload.
-          </p>
-          {subscription.length > 0 ? (
-            <div className="mt-4">
-              <input
-                type="file"
-                id="upload"
-                multiple
-                className="hidden"
-                onChange={handleFileUpload}
-              />
-              <label
-                htmlFor="upload"
-                className="cursor-pointer bg-primary text-white py-2 px-4 rounded"
-              >
-                {isLoading ? 'Uploading...' : 'Click to Upload'}
-              </label>
-              {isLoading && <div className="loader mt-4"></div>} {/* Preloader */}
-              {uploadSuccess && <div className="text-green-500 mt-2">{uploadSuccess}</div>} {/* Success message */}
+        ) : (
+          <>
+            <div className="mb-8">
+              <h1 className="text-3xl font-bold text-gray-700">
+                Welcome, {username}!
+              </h1>
+              <p className="text-gray-600 mt-2">
+                Here are your recent documents and activities.
+              </p>
             </div>
-          ) : (
-            <div className="mt-4">
-              <button
-                type="button"
-                disabled
-                className="bg-primary text-white py-2 px-4 rounded opacity-50 cursor-not-allowed"
-              >
-                Click to Upload 
-              </button>
-              <div className="mt-3">
-                <span style={{ color: "red" }}>Need To Buy Subscription First!</span>
+            {/* Document Upload Section */}
+            <div className="bg-white shadow rounded-lg p-6 mb-8">
+              <div className="flex items-center">
+                <FaUpload className="text-primary text-2xl mr-3" />
+                <h2 className="text-xl font-semibold text-gray-700">
+                  Upload Documents
+                </h2>
               </div>
-            </div>
-          )}
-        </div>
+              {subscription.length > 0 ? (
+                <div className="mt-4">
+                  <input
+                    type="file"
+                    id="upload"
+                    multiple
+                    className="hidden"
+                    onChange={handleFileUpload}
+                  />
+                  <label
+                    htmlFor="upload"
+                    className="cursor-pointer bg-primary text-white py-2 px-4 rounded"
+                  >
+                    {isLoading ? "Uploading..." : "Click to Upload"}
+                  </label>
+                  {isLoading && <div className="loader mt-4"></div>}
+                  {uploadSuccess && (
+                    <div className="text-green-500 mt-2">{uploadSuccess}</div>
+                  )}
+                </div>
+              ) : (
+                <div className="mt-4">
+                  <button
+                    type="button"
+                    disabled
+                    className="bg-primary text-white py-2 px-4 rounded opacity-50 cursor-not-allowed"
+                  >
+                    Click to Upload
+                  </button>
+                  <div className="mt-3">
+                  <Link href="/dashboard/subscription">
+  <div className="flex flex-row gap-1 transition-all duration-300 hover:ml-2">
+    <span style={{ color: "red" }}>
+      Need To Buy Subscription First!
+    </span>
+    <FaArrowRight style={{ color: "red" }} className="mt-1" />
+  </div>
+</Link>
 
-        {/* Recent Documents Section */}
-        <div className="bg-white shadow rounded-lg p-6">
+                  </div>
+                </div>
+              )}
+               {/* Recent Documents Section */}
+        
+            </div>
+            <div className="bg-white shadow rounded-lg p-6">
           <div className="flex items-center mb-4">
             <FaFileAlt className="text-primary text-2xl mr-3" />
             <h2 className="text-xl font-semibold text-gray-700">
@@ -234,22 +220,8 @@ const Dashboard = () => {
           )}
         </div>
 
-        {/* Summary Modal */}
-      
-     {/* <SummaryModal
-        isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
-        summary={summary}
-        documentId={documentId} // Pass document ID as prop
-        onTranslate={handleTranslate}
-      />
-      <SimplifyModal
-        isOpen={modalSimplifyOpen}
-        onClose={() => setModalSimplifyOpen(false)}
-        simplify={simplify}
-        documentId={documentId} // Pass document ID as prop
-        onTranslate={handleTranslate}
-      /> */}
+          </>
+        )}
       </div>
     </div>
   );

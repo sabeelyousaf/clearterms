@@ -35,7 +35,7 @@ export default function Main() {
                             Simplify & Summarize Legal Documents in Seconds
                         </motion.h1>
                         <p className="mb-8 text-lg text-white max-w-2xl mx-auto md:mx-0">
-                            Install our Chrome Extension and easily summarize terms of service, privacy policies, contracts, and more!
+                        Get your web-pages summarized, simplified and translate in seconds
                         </p>
                         <div className='flex md:flex-row flex-col items-center gap-5 justify-center md:justify-start w-full md:w-auto'>
                             <Link href="/signup">
