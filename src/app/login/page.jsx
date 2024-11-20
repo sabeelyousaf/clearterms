@@ -48,7 +48,8 @@ export default function Signup() {
         // Store the token and user data in sessionStorage
         sessionStorage.setItem('token', response.data.token);
         sessionStorage.setItem('subscription', response.data.subscription);
-        sessionStorage.setItem('name', response.data.data.name); // Store name
+        sessionStorage.setItem('first_name', response.data.data.first_name); // Store name
+        sessionStorage.setItem('last_name', response.data.data.last_name); // Store name
         sessionStorage.setItem('email', response.data.data.email); // Store email
 
         // Navigate to dashboard
