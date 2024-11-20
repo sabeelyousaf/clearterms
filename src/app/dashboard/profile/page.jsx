@@ -1,58 +1,59 @@
 "use client";
-import { useState, useEffect } from "react"; // Added useEffect
+import { useState, useEffect } from "react";
 import Sidebar from "@/app/components/dashboard/Sidebar";
 import { profileUpdate } from "@/api/routes";
 import axios from "axios";
 
 const AccountSettings = () => {
-    const [name, setName] = useState(''); // State for the user's name
-    const [email, setEmail] = useState(''); // State for the user's email
-    const [password, setPassword] = useState(''); // State for the user's password
-    const [message, setMessage] = useState(''); // State for success messages
-    const [errorMessage, setErrorMessage] = useState(''); // State for error messages
+    const [firstName, setFirstName] = useState(""); // State for the user's first name
+    const [lastName, setLastName] = useState(""); // State for the user's last name
+    const [email, setEmail] = useState(""); // State for the user's email
+    const [password, setPassword] = useState(""); // State for the user's password
+    const [message, setMessage] = useState(""); // State for success messages
+    const [errorMessage, setErrorMessage] = useState(""); // State for error messages
 
     // Use useEffect to initialize state from session storage
     useEffect(() => {
-        const storedName = sessionStorage.getItem("name") || ""; // Default to empty string if not found
-        const storedEmail = sessionStorage.getItem("email") || ""; // Default to empty string if not found
-        setName(storedName);
-        setEmail(storedEmail);
+        setFirstName(sessionStorage.getItem("first_name") || "");
+        setLastName(sessionStorage.getItem("last_name") || "");
+        setEmail(sessionStorage.getItem("email") || "");
     }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault(); // Prevent page refresh
 
-        // Prepare form data
         const data = {
-            name, // Include user's name
+            first_name: firstName,
+            last_name: lastName,
             email,
-            password, // Include password if provided
+            password,
         };
 
         try {
             const token = sessionStorage.getItem("token"); // Get the token from session storage
             const response = await axios.post(profileUpdate, data, {
                 headers: {
-                    "Authorization": `Bearer ${token}`,
+                    Authorization: `Bearer ${token}`,
                     "Content-Type": "application/json",
                 },
             });
 
-            const result = response.data; // The response is already in JSON format
-
             if (response.status === 200) {
-                // Update session storage with the new name and email
-                sessionStorage.setItem("name", name);
+                const result = response.data;
+                // Update session storage with the new values
+                sessionStorage.setItem("first_name", firstName);
+                sessionStorage.setItem("last_name", lastName);
                 sessionStorage.setItem("email", email);
-                setMessage(result.message);
-                setErrorMessage(''); // Clear any previous error messages
+
+                setMessage(result.message || "Profile updated successfully.");
+                setErrorMessage("");
             } else {
-                setErrorMessage(result.message);
-                setMessage(''); // Clear any previous success messages
+                setErrorMessage(response.data.message || "An unexpected error occurred.");
+                setMessage("");
             }
         } catch (error) {
-            setErrorMessage('An error occurred while updating your profile.');
-            setMessage(''); // Clear any previous success messages
+            setErrorMessage(error.response?.data?.message || "An error occurred while updating your profile.");
+            setMessage("");
         }
     };
 
@@ -65,13 +66,24 @@ const AccountSettings = () => {
                     {message && <div className="text-green-500 mb-4">{message}</div>}
                     {errorMessage && <div className="text-red-500 mb-4">{errorMessage}</div>}
                     <div className="mb-4">
-                        <label className="block text-gray-700">Name</label>
+                        <label className="block text-gray-700">First Name</label>
                         <input
                             type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
+                            value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)}
                             className="border p-2 w-full rounded-lg"
-                            placeholder="Enter your name"
+                            placeholder="Enter your first name"
+                            required
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label className="block text-gray-700">Last Name</label>
+                        <input
+                            type="text"
+                            value={lastName}
+                            onChange={(e) => setLastName(e.target.value)}
+                            className="border p-2 w-full rounded-lg"
+                            placeholder="Enter your last name"
                             required
                         />
                     </div>
@@ -96,7 +108,9 @@ const AccountSettings = () => {
                             placeholder="Change your password"
                         />
                     </div>
-                    <button type="submit" className="bg-primary text-white py-2 px-4 rounded">Save Changes</button>
+                    <button type="submit" className="bg-primary text-white py-2 px-4 rounded">
+                        Save Changes
+                    </button>
                 </form>
             </div>
         </div>

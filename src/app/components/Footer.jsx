@@ -12,10 +12,10 @@ const Footer = () => {
                     <div>
                         <h4 className="text-lg font-bold mb-4">About Us</h4>
                         <p className="text-sm mb-2">
-                            We provide tools to simplify legal documents and empower users to understand their rights.
+                        Get your web-pages summarized, simplified and translate in seconds
                         </p>
-                        <Link href="/about" className="text-white hover:underline">
-                            Learn More
+                        <Link href="/" className="text-white hover:underline">
+                            <button className="bg-indigo-600 text-white px-6 py-3 rounded-full mt-4">Install Extension</button>
                         </Link>
                     </div>
 
@@ -39,8 +39,13 @@ const Footer = () => {
                                 </Link>
                             </li>
                             <li className="mb-2">
-                            <Link href="/privacy" className="text-white hover:underline">
+                            <Link href="/privacy-policy" className="text-white hover:underline">
                                 Privacy Policy
+                                </Link>
+                            </li>
+                            <li className="mb-2">
+                            <Link href="/terms-conditions" className="text-white hover:underline">
+                                Terms & Conditions
                                 </Link>
                             </li>
                         </ul>
