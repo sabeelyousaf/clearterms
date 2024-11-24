@@ -66,11 +66,11 @@ export default function Signup() {
           theme: "light",
         });
 
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("subscription", response.data.subscription);
-        localStorage.setItem("first_name", response.data.data.first_name);
-        localStorage.setItem("last_name", response.data.data.last_name);
-        localStorage.setItem("email", response.data.data.email);
+        // localStorage.setItem("token", response.data.token);
+        // localStorage.setItem("subscription", response.data.subscription);
+        // localStorage.setItem("first_name", response.data.data.first_name);
+        // localStorage.setItem("last_name", response.data.data.last_name);
+        // localStorage.setItem("email", response.data.data.email);
 
         // Redirect the user to the dashboard or a page telling them to verify their email
         window.location.href = "/verify-email";  // Show a custom page where they can learn more

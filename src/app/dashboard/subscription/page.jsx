@@ -100,13 +100,13 @@ const Subscription = () => {
 
                             {/* Only show subscription plans that are not already active */}
                             {!subscriptionTypes.includes("daily") && (
-                                <SubscriptionPlan title="Daily Plan" price={4.99} features={planFeatures.daily} loading={loading} handleCheckout={() => handleCheckout(4.99, "24 Hours Plan")} />
+                                <SubscriptionPlan title="Daily Plan" price={4.99} withPrice="day" features={planFeatures.daily} loading={loading} handleCheckout={() => handleCheckout(4.99, "24 Hours Plan")} />
                             )}
                             {!subscriptionTypes.includes("monthly") && (
-                                <SubscriptionPlan title="Monthly Plan" price={9.99} features={planFeatures.monthly} loading={loading} handleCheckout={() => handleCheckout(9.99, "Monthly Plan")} />
+                                <SubscriptionPlan title="Monthly Plan" price={9.99} withPrice = "month" features={planFeatures.monthly} loading={loading} handleCheckout={() => handleCheckout(9.99, "Monthly Plan")} />
                             )}
                             {!subscriptionTypes.includes("yearly") && (
-                                <SubscriptionPlan title="Yearly Plan" price={75} features={planFeatures.yearly} loading={loading} handleCheckout={() => handleCheckout(75, "Yearly Plan")} />
+                                <SubscriptionPlan title="Yearly Plan" price={75} withPrice="year" features={planFeatures.yearly} loading={loading} handleCheckout={() => handleCheckout(75, "Yearly Plan")} />
                             )}
                         </>
                     )}

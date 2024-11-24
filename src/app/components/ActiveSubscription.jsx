@@ -16,7 +16,7 @@ export const ActiveSubscription = ({ title, message, features }) => (
                     ))}
                 </ul>
             </div>
-            <div className="bg-green-100 text-green-700 px-4 py-2 rounded-full text-center font-semibold">
+            <div className="bg-green-100 text-green-700 px-4 py-2 rounded-lg text-center font-semibold">
                 Active Subscription
             </div>
         </div>

@@ -1,12 +1,12 @@
 import React from 'react'
 import { CheckIcon } from "@heroicons/react/outline";
-export const SubscriptionPlan = ({ title, price, features, loading, handleCheckout }) => (
+export const SubscriptionPlan = ({ title, price, features, loading, handleCheckout ,withPrice }) => (
     <div className="bg-white max-w-[400px] md:h-[590px] px-5 py-8 rounded-3xl shadow-xl">
         <div className="flex flex-col justify-between h-full">
             <div>
                 <h3 className="text-2xl font-bold mb-4">{title}</h3>
                 <p className="mb-4">Unlimited uploads and extension uses with priority support.</p>
-                <p className="font-bold text-lg mb-8">${price}/month</p>
+                <p className="font-bold text-lg mb-8">${price}/{withPrice}</p>
                 <ul className="list-none mb-6">
                     {features.map((feature, index) => (
                         <li key={index} className="flex items-center mb-2">
@@ -18,7 +18,7 @@ export const SubscriptionPlan = ({ title, price, features, loading, handleChecko
             </div>
             <button
                 onClick={handleCheckout}
-                className={`bg-indigo-600 text-center text-white px-8 py-3 rounded-full font-bold cursor-pointer transition-transform transform hover:scale-105 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+                className={`bg-indigo-600 text-center text-white px-8 py-3 rounded-lg font-bold cursor-pointer transition-transform transform hover:scale-105 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
                 disabled={loading}
             >
                 {loading ? (

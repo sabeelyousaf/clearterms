@@ -15,7 +15,7 @@ const Footer = () => {
                         Get your web-pages summarized, simplified and translate in seconds
                         </p>
                         <Link href="/" className="text-white hover:underline">
-                            <button className="bg-indigo-600 text-white px-6 py-3 rounded-full mt-4">Install Extension</button>
+                            <button className="bg-indigo-600 text-white px-6 py-3 rounded-lg mt-4">Install Extension</button>
                         </Link>
                     </div>
 
