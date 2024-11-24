@@ -14,7 +14,7 @@ const SummaryModal = ({ isOpen, onClose, summary, documentId }) => {
   const handleTranslate = async () => {
     setLoading(true); 
     setTranslatedSummary(''); 
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
     try {
       const response = await axios.post(docSummarize, {
         document_id: documentId,
@@ -43,7 +43,7 @@ const SummaryModal = ({ isOpen, onClose, summary, documentId }) => {
     }
     
     setLoading(true); 
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
     const apiUrl = selectedDownloadType === "pdf" ? generatePDF : generateDocx;
 
     try {
