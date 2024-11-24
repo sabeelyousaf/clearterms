@@ -21,7 +21,7 @@ useEffect(() => {
 
         <button
           onClick={handleBackToDashboard}
-          className="bg-indigo-600 text-white px-6 py-2 rounded-full font-bold hover:bg-indigo-700 transition-colors"
+          className="bg-indigo-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-indigo-700 transition-colors"
         >
           Back to Dashboard
         </button>

@@ -76,18 +76,25 @@ export default function Main() {
                        Install our Chrome Extension and easily summarize terms of service, privacy policies, contracts, and more!
                         </p>
                        
-                        <div className='bg-white p-2  flex md:flex-row flex-col mt-7  items-center gap-5  lg:w-[500px]'>
+                        <div className=' p-2  flex md:flex-row flex-col mt-7  items-center gap-5  lg:w-[500px]'>
                             <Link href="/signup">
-                            <div className="bg-green text-white flex gap-3 px-8 py-5 rounded-3 font-bold transition transform hover:scale-105 shadow-lg">
-  <span>Sign up <span className="font-light">It's Free</span></span>
-  <span><FaArrowRight /></span>
-</div>
+                            <button
+  className="bg-indigo-600 rounded-lg text-white flex items-center justify-between gap-3 px-8 py-5 sm:w-[500px] md:w-auto font-bold transition-transform hover:scale-105 shadow-lg"
+>
+  <span>
+    Sign up<span className="font-light ms-1"> It's Free</span>
+  </span>
+  <span className="mt-1">
+    <FaArrowRight />
+  </span>
+</button>
+
 
                             </Link>
                             <Link href="/">
                            
           {/* Google Sign-In Button */}
-          <div className="bg-white border  px-8 py-3 md:w-auto w-[300px]  rounded-3 font-bold transition transform hover:scale-105 shadow-lg">
+          <div className="bg-white  md:w-auto rounded-lg text-white flex gap-3 px-5 py-3 font-bold transition transform hover:scale-105 shadow-lg">
                              
           <GoogleLogin
             onSuccess={handleGoogleSuccess}

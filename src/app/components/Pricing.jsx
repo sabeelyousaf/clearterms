@@ -43,7 +43,7 @@ const PricingSection = () => {
 
                         <h3 className="text-2xl font-bold mb-4">24 Hours Plan</h3>
                         <p className="mb-4">Unlimited uploads and extension uses with priority support.</p>
-                        <p className="font-bold text-lg mb-8">$4.99/month</p>
+                        <p className="font-bold text-lg mb-8">$4.99/day</p>
 
                         {/* Features List */}
                         <ul className="list-none mb-6">
@@ -56,7 +56,7 @@ const PricingSection = () => {
                         </ul>
                             </div>
                             <Link href="/login">
-                            <p className="bg-indigo-600 text-white px-8 py-3 rounded-full font-bold transition-transform transform hover:scale-105">
+                            <p className="bg-indigo-600 text-white px-8 py-3 rounded-lg font-bold transition-transform transform hover:scale-105">
                                 Upgrade Now
                             </p>
                         </Link>
@@ -86,7 +86,7 @@ const PricingSection = () => {
                         </ul>
                             </div>
                             <Link href="/login">
-                            <p className="bg-indigo-600 text-white px-8 py-3 rounded-full font-bold transition-transform transform hover:scale-105">
+                            <p className="bg-indigo-600 text-white px-8 py-3 rounded-lg font-bold transition-transform transform hover:scale-105">
                                 Upgrade Now
                             </p>
                         </Link>
@@ -102,7 +102,7 @@ const PricingSection = () => {
                             <div>
                         <h3 className="text-2xl font-bold mb-4">Yearly Plan</h3>
                         <p className="mb-4">Unlimited uploads and extension uses with priority support.</p>
-                        <p className="font-bold text-lg mb-8">$75/month</p>
+                        <p className="font-bold text-lg mb-8">$75/year</p>
 
                         {/* Features List */}
                         <ul className="list-none mb-6">
@@ -115,7 +115,7 @@ const PricingSection = () => {
                         </ul>
                             </div>
                         <Link href="/login">
-                            <p className="bg-indigo-600 text-white px-8 py-3 rounded-full font-bold transition-transform transform hover:scale-105">
+                            <p className="bg-indigo-600 text-white px-8 py-3 rounded-lg font-bold transition-transform transform hover:scale-105">
                                 Upgrade Now
                             </p>
                         </Link>

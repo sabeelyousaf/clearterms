@@ -35,7 +35,7 @@ const Header = () => {
                         <Link href="/#features"><p className="hover:text-indigo-600">Features</p></Link>
                         <Link href="/#pricing"><p className="hover:text-indigo-600">Pricing</p></Link>
                         {!isLoggedIn ? (
-                            <Link href="/login"><p className="bg-indigo-600 text-white px-6 py-3 rounded-full">Login</p></Link>
+                            <Link href="/login"><p className="bg-indigo-600 text-white px-6 py-3 rounded-lg">Login</p></Link>
                         ) : (
                             <div className="relative">
                                 <button onClick={toggleDropdown} className="flex items-center">
@@ -74,7 +74,7 @@ const Header = () => {
                             <Link href="#features"><p className="hover:text-indigo-600" onClick={toggleMenu}>Features</p></Link>
                             <Link href="#pricing"><p className="hover:text-indigo-600" onClick={toggleMenu}>Pricing</p></Link>
                             {!isLoggedIn ? (
-                                <Link href="/login"><p className="bg-indigo-600 text-white px-6 py-2 rounded-full">Login</p></Link>
+                                <Link href="/login"><p className="bg-indigo-600 text-white px-6 py-2 rounded-lg">Login</p></Link>
                             ) : (
                                 <div className="relative">
                                     <button onClick={toggleDropdown} className="flex items-center">
