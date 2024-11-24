@@ -24,7 +24,7 @@ const Dashboard = () => {
   };
 
   const fetchSubscription = async () => {
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
     try {
       const response = await axios.get(checkSubscription, {
         headers: {
@@ -45,7 +45,7 @@ const Dashboard = () => {
     return new Date(dateString).toLocaleDateString('en-GB', options).replace(',', ''); // Use en-GB to get 'dd mmm yyyy' format
   };
   const fetchDocs = async () => {
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
     try {
       const response = await axios.get(allDocs, {
         headers: {
@@ -60,8 +60,8 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    const firstName = sessionStorage.getItem("first_name") || "";
-    const lastName = sessionStorage.getItem("last_name") || "";
+    const firstName = localStorage.getItem("first_name") || "";
+    const lastName = localStorage.getItem("last_name") || "";
     setUsername(`${firstName} ${lastName}`.trim());
 
     // Fetch subscription and documents
@@ -74,7 +74,7 @@ const Dashboard = () => {
     setFiles([...files, ...uploadedFiles]);
 
     const formData = new FormData();
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
     uploadedFiles.forEach((file) => formData.append("documents[]", file));
 
     setIsLoading(true); // Show preloader
@@ -116,6 +116,15 @@ const Dashboard = () => {
               <p className="text-gray-600 mt-2">
                 Here are your recent documents and activities.
               </p>
+              <div className="text-end">
+  <button className="bg-indigo-600 mb-3 text-white p-3 rounded-lg font-bold hover:bg-indigo-500 grow-effect">
+    Visit Extension
+  </button>
+  <p className="text-green-500">
+    Will be Process your webpage in minute
+  </p>
+</div>
+             
             </div>
             {/* Document Upload Section */}
             <div className="bg-white shadow rounded-lg p-6 mb-8">
@@ -125,6 +134,7 @@ const Dashboard = () => {
                   Upload Documents
                 </h2>
               </div>
+               <p className="pt-4">drag and drop your documents for processing</p>
               {subscription.length > 0 ? (
                 <div className="mt-4">
                   <input

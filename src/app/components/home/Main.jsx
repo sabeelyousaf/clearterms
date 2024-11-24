@@ -2,11 +2,49 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { FaFileAlt, FaUpload, FaGlobe } from 'react-icons/fa'; // Importing icons from react-icons
+import { FaFileAlt, FaUpload, FaGlobe, FaArrowRight } from 'react-icons/fa'; // Importing icons from react-icons
 import Image from 'next/image';
-
+import { GoogleLogin } from '@react-oauth/google'; // Import GoogleLogin
 export default function Main() {
 
+
+    const handleGoogleSuccess = (credentialResponse) => {
+        const decoded = jwt_decode(credentialResponse.credential); // Decode token (optional)
+        console.log('Google User Info:', decoded);
+    
+        // Example: Redirect to dashboard or call backend with the token
+        localStorage.setItem('token', credentialResponse.credential);
+        localStorage.setItem('email', decoded.email);
+        localStorage.setItem('first_name', decoded.given_name);
+        localStorage.setItem('last_name', decoded.family_name);
+    
+        toast.success('Google sign-in successful!', {
+          position: 'top-right',
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        });
+    
+        router.push('/dashboard');
+      };
+    
+      // Google sign-in error handler
+      const handleGoogleError = () => {
+        toast.error('Google sign-in failed. Please try again.', {
+          position: 'top-right',
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        });
+      };
     return (
         <div className=" ">
             {/* Navbar */}
@@ -35,18 +73,31 @@ export default function Main() {
                             Simplify & Summarize Legal Documents in Seconds
                         </motion.h1>
                         <p className="mb-8 text-lg text-white max-w-2xl mx-auto md:mx-0">
-                        Get your web-pages summarized, simplified and translate in seconds
+                       Install our Chrome Extension and easily summarize terms of service, privacy policies, contracts, and more!
                         </p>
-                        <div className='flex md:flex-row flex-col items-center gap-5 justify-center md:justify-start w-full md:w-auto'>
+                       
+                        <div className='bg-white p-2  flex md:flex-row flex-col mt-7  items-center gap-5  lg:w-[500px]'>
                             <Link href="/signup">
-                                <p className="bg-white text-black/70 px-8 py-4 md:w-auto w-[300px] rounded-full font-bold transition transform hover:scale-105 shadow-lg">
-                                    Get Started
-                                </p>
+                            <div className="bg-green text-white flex gap-3 px-8 py-5 rounded-3 font-bold transition transform hover:scale-105 shadow-lg">
+  <span>Sign up <span className="font-light">It's Free</span></span>
+  <span><FaArrowRight /></span>
+</div>
+
                             </Link>
                             <Link href="/">
-                                <p className="bg-white text-black/70 px-8 py-4 md:w-auto w-[300px] rounded-full font-bold transition transform hover:scale-105 shadow-lg">
-                                    Install the Extension
-                                </p>
+                           
+          {/* Google Sign-In Button */}
+          <div className="bg-white border  px-8 py-3 md:w-auto w-[300px]  rounded-3 font-bold transition transform hover:scale-105 shadow-lg">
+                             
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={handleGoogleError}
+            width="100%" 
+           
+          />
+              
+                </div>
+        
                             </Link>
                         </div>
                     </div>

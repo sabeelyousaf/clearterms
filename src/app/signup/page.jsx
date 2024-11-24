@@ -1,10 +1,12 @@
 "use client";
+import { ThreeDots } from 'react-loader-spinner'; // Import the loader
 import { register } from "@/api/routes";
 import axios from "axios";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Ensure toast styles are included
+import { GoogleLogin } from '@react-oauth/google'; // Import GoogleLogin
 
 export default function Signup() {
   const [form, setForm] = useState({
@@ -15,10 +17,11 @@ export default function Signup() {
   });
   const [isPrivacyChecked, setIsPrivacyChecked] = useState(false); // State for privacy policy checkbox
   const [isTermsChecked, setIsTermsChecked] = useState(false); // State for terms & conditions checkbox
+  const [isLoading, setIsLoading] = useState(false); // State for loading spinner
 
   // Check if token exists and redirect to dashboard
   useEffect(() => {
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
     if (token) {
       window.location.href = "/dashboard";
     }
@@ -46,11 +49,13 @@ export default function Signup() {
       return;
     }
 
+    setIsLoading(true); // Show the loader when the API request starts
+
     try {
       const response = await axios.post(register, form);
 
       if (response.status === 200) {
-        toast.success("Signup successful!", {
+        toast.success("Signup successful! Please verify your email.", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -61,12 +66,14 @@ export default function Signup() {
           theme: "light",
         });
 
-        sessionStorage.setItem("token", response.data.token);
-        sessionStorage.setItem("subscription", response.data.subscription);
-        sessionStorage.setItem("first_name", response.data.data.first_name);
-        sessionStorage.setItem("last_name", response.data.data.last_name);
-        sessionStorage.setItem("email", response.data.data.email);
-        window.location.href = "/dashboard";
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("subscription", response.data.subscription);
+        localStorage.setItem("first_name", response.data.data.first_name);
+        localStorage.setItem("last_name", response.data.data.last_name);
+        localStorage.setItem("email", response.data.data.email);
+
+        // Redirect the user to the dashboard or a page telling them to verify their email
+        window.location.href = "/verify-email";  // Show a custom page where they can learn more
       }
     } catch (error) {
       const errorMessage =
@@ -83,6 +90,47 @@ export default function Signup() {
         draggable: true,
         progress: undefined,
         theme: "light",
+      });
+    } finally {
+      setIsLoading(false); // Hide the loader when the API request is complete
+    }
+  };
+
+  // Google signup success handler
+  const handleGoogleSignup = async (response) => {
+    try {
+      const { credential } = response; // Extract Google OAuth credential (ID token)
+
+      // Send the credential to your server to create an account
+      const res = await axios.post('/your-api-endpoint-to-handle-google-signup', {
+        credential,
+      });
+
+      if (res.status === 200) {
+        toast.success("Signup successful! Please verify your email.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("subscription", res.data.subscription);
+        localStorage.setItem("first_name", res.data.data.first_name);
+        localStorage.setItem("last_name", res.data.data.last_name);
+        localStorage.setItem("email", res.data.data.email);
+
+        // Redirect to a page telling the user to verify their email
+        window.location.href = "/verify-email";
+      }
+    } catch (error) {
+      toast.error('Google signup failed. Please try again.', {
+        position: 'top-right',
+        autoClose: 3000,
       });
     }
   };
@@ -181,11 +229,23 @@ export default function Signup() {
 
           <button
             type="submit"
-            className="w-full bg-indigo-600 text-white p-3 rounded-lg font-bold hover:bg-indigo-500"
+            className="w-full bg-indigo-600 mb-3 text-white p-3 rounded-lg font-bold hover:bg-indigo-500"
+            disabled={isLoading} // Disable the button when loading
           >
-            Sign Up
+            {isLoading ? (
+              <div className="flex justify-center items-center">
+                <ThreeDots color="#fff" height={30} width={30} />
+              </div>
+            ) : (
+              "Sign Up"
+            )}
           </button>
         </form>
+        <GoogleLogin
+          onSuccess={handleGoogleSignup}
+          onError={() => toast.error('Google signup failed', { position: 'top-right', autoClose: 3000 })}
+          useOneTap
+        />
         <p className="mt-6 text-center text-sm">
           Already have an account? <Link href="/login" className="text-indigo-600 font-bold">Login</Link>
         </p>

@@ -14,9 +14,9 @@ const AccountSettings = () => {
 
     // Use useEffect to initialize state from session storage
     useEffect(() => {
-        setFirstName(sessionStorage.getItem("first_name") || "");
-        setLastName(sessionStorage.getItem("last_name") || "");
-        setEmail(sessionStorage.getItem("email") || "");
+        setFirstName(localStorage.getItem("first_name") || "");
+        setLastName(localStorage.getItem("last_name") || "");
+        setEmail(localStorage.getItem("email") || "");
     }, []);
 
     const handleSubmit = async (e) => {
@@ -30,7 +30,7 @@ const AccountSettings = () => {
         };
 
         try {
-            const token = sessionStorage.getItem("token"); // Get the token from session storage
+            const token = localStorage.getItem("token"); // Get the token from session storage
             const response = await axios.post(profileUpdate, data, {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -41,9 +41,9 @@ const AccountSettings = () => {
             if (response.status === 200) {
                 const result = response.data;
                 // Update session storage with the new values
-                sessionStorage.setItem("first_name", firstName);
-                sessionStorage.setItem("last_name", lastName);
-                sessionStorage.setItem("email", email);
+                localStorage.setItem("first_name", firstName);
+                localStorage.setItem("last_name", lastName);
+                localStorage.setItem("email", email);
 
                 setMessage(result.message || "Profile updated successfully.");
                 setErrorMessage("");
