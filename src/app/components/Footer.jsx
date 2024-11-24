@@ -7,9 +7,9 @@ const Footer = () => {
     return (
         <footer className="bg-gray-800 text-white py-10">
             <div className="max-w-screen-xl mx-auto px-6">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-8">
+                <div className="flex flex-row mb-8 flex-wrap">
                     {/* About Section */}
-                    <div>
+                    <div className='w-full py-5 px-3 lg:w-1/4'>
                         <h4 className="text-lg font-bold mb-4">About Us</h4>
                         <p className="text-sm mb-2">
                         Get your web-pages summarized, simplified and translate in seconds
@@ -19,8 +19,8 @@ const Footer = () => {
                         </Link>
                     </div>
 
-                    {/* Links Section */}
-                    <div>
+
+                    <div className='w-1/2 py-5 lg:w-1/4'>
                         <h4 className="text-lg font-bold mb-4">Links</h4>
                         <ul className="list-none">
                             <li className="mb-2">
@@ -50,9 +50,32 @@ const Footer = () => {
                             </li>
                         </ul>
                     </div>
+                    {/* Links Section */}
+                    <div className=' w-1/2 py-5  lg:w-1/4'>
+                        <h4 className="text-lg font-bold mb-4">Features</h4>
+                        <ul className="list-none">
+                            <li className="mb-2">
+                            Text translation 
+
+                            </li>
+                            <li className="mb-2">
+                            AI text summarization 
+                            </li>
+                            <li className="mb-2">
+                            AI docs simplification
+
+                            </li>
+                            <li className="mb-2">
+                            AI webpage-summarization
+                            </li>
+                          
+                        </ul>
+                    </div>
+
+                   
 
                     {/* Social Media Section */}
-                    <div>
+                    <div className='sm:w-auto py-5 lg:w-1/4'>
                         <h4 className="text-lg font-bold mb-4">Follow Us</h4>
                         <ul className="flex space-x-4">
                             <li>
