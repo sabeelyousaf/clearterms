@@ -116,17 +116,30 @@ const Dashboard = () => {
               <p className="text-gray-600 mt-2">
                 Here are your recent documents and activities.
               </p>
-              <div className="text-end">
-  <button className="bg-indigo-600 mb-3 text-white p-3 rounded-lg font-bold hover:bg-indigo-500 grow-effect">
-    Visit Extension
-  </button>
-  <p className="text-green-500">
-    Will be Process your webpage in minute
-  </p>
-</div>
+         
              
             </div>
             {/* Document Upload Section */}
+
+            <div className="bg-white shadow rounded-lg p-6 mb-8">
+              <div className="flex flex-row items-center flex-wrap">
+                <div>
+               <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Google_Chrome_icon_%28February_2022%29.svg/768px-Google_Chrome_icon_%28February_2022%29.svg.png" className="me-2" width="60" alt="" />
+               </div>
+               <div className="w-3/5 ms-3">
+               <h2 className="text-xl font-semibold text-gray-700 mb-0">
+               Clear terms for Google Chrome
+                </h2>
+                <p >Description- Clear Terms google chrome extension offers text simplication, summarisation and translation directly on the web without uploading documents.</p>
+               </div>
+               <div style={{width:"30%"}}>
+               <button
+            type="submit"
+            className=" bg-indigo-600 text-end block ms-auto text-white p-3 float-right rounded-lg font-bold hover:bg-indigo-500   px-5 "
+          >Install extension for free</button>
+               </div>
+              </div>
+            </div>
             <div className="bg-white shadow rounded-lg p-6 mb-8">
               <div className="flex items-center">
                 <FaUpload className="text-primary text-2xl mr-3" />

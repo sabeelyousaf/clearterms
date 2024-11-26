@@ -293,21 +293,47 @@ useEffect(() => {
                 Select Language:
               </label>
               <select
-                id="language"
-                className="p-2 border rounded-lg focus:outline-none "
-                value={selectedLanguage}
-                onChange={handleLanguageChange}
-              >
-                <option value="en">English</option>
-                <option value="fr">French</option>
-                <option value="de">German</option>
-                <option value="ru">Russian</option>
-                {languages.map((language) => (
-                  <option key={language} value={language}>
-                    {language}
-                  </option>
-                ))}
-              </select>
+  id="language"
+  className="p-2 border rounded-lg focus:outline-none"
+  value={selectedLanguage}
+  onChange={handleLanguageChange}
+>
+  <option value="en">English</option>
+  <option value="fr">French</option>
+  <option value="de">German</option>
+  <option value="ru">Russian</option>
+  <option value="es">Spanish</option>
+  <option value="zh">Chinese (Simplified)</option>
+  <option value="zh-TW">Chinese (Traditional)</option>
+  <option value="ar">Arabic</option>
+  <option value="hi">Hindi</option>
+  <option value="ja">Japanese</option>
+  <option value="pt">Portuguese</option>
+  <option value="bn">Bengali</option>
+  <option value="ko">Korean</option>
+  <option value="it">Italian</option>
+  <option value="tr">Turkish</option>
+  <option value="vi">Vietnamese</option>
+  <option value="pl">Polish</option>
+  <option value="uk">Ukrainian</option>
+  <option value="fa">Persian</option>
+  <option value="ms">Malay</option>
+  <option value="id">Indonesian</option>
+  <option value="th">Thai</option>
+  <option value="sw">Swahili</option>
+  <option value="ta">Tamil</option>
+  <option value="te">Telugu</option>
+  <option value="mr">Marathi</option>
+  <option value="ur">Urdu</option>
+  <option value="nl">Dutch</option>
+  <option value="el">Greek</option>
+  {languages.map((language) => (
+    <option key={language} value={language}>
+      {language}
+    </option>
+  ))}
+</select>
+
               <select
                 className="border rounded py-1 px-2 ms-4"
                 value={selectedDownloadType}

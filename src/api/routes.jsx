@@ -7,6 +7,9 @@ const register = `${BASE_URL}/register`;
 const resetPassword = `${BASE_URL}/reset-password`;
 const profileUpdate = `${BASE_URL}/profile-update`;
 const forgotPassword = `${BASE_URL}/forgot-password`;
+const googleAuth= `${BASE_URL}/auth/google`
+const redirectGoogle= `${BASE_URL}/redirect/google`
+
 
 // Stripe
 const checkSubscription = `${BASE_URL}/check-subscription`;
@@ -24,6 +27,9 @@ const docSimplify = `${BASE_URL}/doc/simplify`;
 //Generate PDF & DOCX
 const downloadContent = `${BASE_URL}/download-content`;
 
+//Contact Mail
+const contactMail= `${BASE_URL}/contact-mail`;
+
 export {
     login,
     register,
@@ -37,5 +43,8 @@ export {
     singleDoc,
     downloadContent,
     forgotPassword,
-    resetPassword
+    resetPassword,
+    googleAuth,
+    contactMail,
+    redirectGoogle
 };
