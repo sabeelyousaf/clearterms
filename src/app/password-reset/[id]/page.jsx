@@ -86,7 +86,12 @@ const ResetPassword = () => {
                             <p className="mt-4 text-center text-sm text-gray-700">
                                 {message}
                             </p>
-                        <Link href="/login">Back to login</Link>
+                            <Link href="/login"
+            type="submit"
+            className="w-full bg-green-400 text-white p-3 rounded-lg font-bold hover:bg-indigo-500 flex items-center justify-center mt-5"
+          >
+         Back to login
+          </Link>
                         </>
                         )}
                     </div>
