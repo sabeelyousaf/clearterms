@@ -23,9 +23,11 @@ const Sidebar = () => {
 
 
   const handleLogout = async () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('subscription');
-
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('subscription');
+    sessionStorage.removeItem('first_name');
+    sessionStorage.removeItem('last_name');
+    sessionStorage.removeItem('email');
     router.push('/login');
   };
 

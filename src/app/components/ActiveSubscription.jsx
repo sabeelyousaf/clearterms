@@ -1,7 +1,7 @@
 import React from 'react';
 import { CheckIcon } from "@heroicons/react/outline";
 
-export const ActiveSubscription = ({ title, message, features }) => (
+export const ActiveSubscription = ({ title, message, features ,expiryDate}) => (
     <div className="bg-gray-100 max-w-[400px] md:h-[590px] px-5 py-8 rounded-3xl shadow-xl">
         <div className="flex flex-col justify-between h-full">
             <div>
@@ -16,6 +16,7 @@ export const ActiveSubscription = ({ title, message, features }) => (
                     ))}
                 </ul>
             </div>
+            <span className='text-red-500 text-center'>Expiry Date : {expiryDate}</span>
             <div className="bg-green-100 text-green-700 px-4 py-2 rounded-lg text-center font-semibold">
                 Active Subscription
             </div>
