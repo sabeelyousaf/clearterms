@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Sidebar from "@/app/components/dashboard/Sidebar";
-import { profileUpdate } from "@/api/routes";
+import { profileUpdate } from "@/app/api/routes";
 import axios from "axios";
 
 const AccountSettings = () => {
@@ -14,9 +14,9 @@ const AccountSettings = () => {
 
     // Use useEffect to initialize state from session storage
     useEffect(() => {
-        setFirstName(localStorage.getItem("first_name") || "");
-        setLastName(localStorage.getItem("last_name") || "");
-        setEmail(localStorage.getItem("email") || "");
+        setFirstName(sessionStorage.getItem("first_name") || "");
+        setLastName(sessionStorage.getItem("last_name") || "");
+        setEmail(sessionStorage.getItem("email") || "");
     }, []);
 
     const handleSubmit = async (e) => {
@@ -30,7 +30,7 @@ const AccountSettings = () => {
         };
 
         try {
-            const token = localStorage.getItem("token"); // Get the token from session storage
+            const token = sessionStorage.getItem("token"); // Get the token from session storage
             const response = await axios.post(profileUpdate, data, {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -41,9 +41,9 @@ const AccountSettings = () => {
             if (response.status === 200) {
                 const result = response.data;
                 // Update session storage with the new values
-                localStorage.setItem("first_name", firstName);
-                localStorage.setItem("last_name", lastName);
-                localStorage.setItem("email", email);
+                sessionStorage.setItem("first_name", firstName);
+                sessionStorage.setItem("last_name", lastName);
+                sessionStorage.setItem("email", email);
 
                 setMessage(result.message || "Profile updated successfully.");
                 setErrorMessage("");

@@ -4,19 +4,24 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Sidebar from "@/app/components/dashboard/Sidebar";
 import { FaArrowLeft, FaFileAlt, FaUpload } from "react-icons/fa";
-import { singleDoc, downloadContent } from "@/api/routes";
+import { singleDoc, downloadContent } from "@/app/api/routes";
 import Link from "next/link";
 const DocumentDetails = ({ params }) => {
 const { id } = params; // Get the document ID from the URL
 const [inputText, setInputText] = useState("");
 const [outputText, setOutputText] = useState("");
 const [isLoading, setIsLoading] = useState(false);
+const [loading, setLoading] = useState(false);
 const [selectedLanguage, setSelectedLanguage] = useState("english");
 const [languages, setLanguages] = useState([]);
 const [documentContent, setDocumentContent] = useState(null);
 const [error, setError] = useState(null); // State for errors
 const [selectedDownloadType, setSelectedDownloadType] = useState("");
-const [loading, setLoading] = useState(false);
+const [simplifyloading, setSimplifyLoading] = useState(false);
+const [summarizeLoading, setSummarizeLoading] = useState(false);
+
+
+
 const [docName,SetdocName]= useState('');
 
 useEffect(() => {
@@ -31,7 +36,7 @@ useEffect(() => {
     }
 
     setLoading(true);
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     const apiUrl = downloadContent;
 
     try {
@@ -73,7 +78,7 @@ useEffect(() => {
   const fetchDocumentContent = async () => {
     setIsLoading(true);
     try {
-      const token = localStorage.getItem("token");
+      const token = sessionStorage.getItem("token");
       if (!token) {
         setError("User is not authenticated.");
         return;
@@ -163,9 +168,9 @@ useEffect(() => {
       }),
     };
   
-    setIsLoading(true);
+    setSummarizeLoading(true);
     const data = await fetchData(url, options);
-    setIsLoading(false);
+    setSummarizeLoading(false);
   
     if (data?.result){
       const cleanedText = data.result.replace(/[\*#]/g, "").replace(/---/g, "");
@@ -188,9 +193,10 @@ useEffect(() => {
       }),
     };
 
-    setIsLoading(true);
+    setSummarizeLoading(true);
     const data = await fetchData(url, options);
-    setIsLoading(false);
+    setSummarizeLoading(false);
+
 
     if (data?.data?.translations?.[0]?.translatedText) {
       setOutputText(data.data.translations[0].translatedText);
@@ -222,9 +228,9 @@ useEffect(() => {
       }),
     };
   
-    setIsLoading(true);
+    setSimplifyLoading(true);
     const data = await fetchData(url, options);
-    setIsLoading(false);
+    setSimplifyLoading(false);
   
     if (data?.result){
       const cleanedText = data.result.replace(/[\*#]/g, "").replace(/---/g, "");
@@ -272,16 +278,16 @@ useEffect(() => {
               <button
                 className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none flex items-center"
                 onClick={handleSimplify}
-                disabled={isLoading}
+                disabled={simplifyloading}
               >
-                {isLoading ? <div className="loader mr-2"></div> : "Simplify"}
+                {simplifyloading ? <div className="loader mr-2"></div> : "Simplify"}
               </button>
               <button
                 className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none flex items-center"
                 onClick={handleSummarize}
-                disabled={isLoading}
+                disabled={summarizeLoading}
               >
-                {isLoading ? <div className="loader mr-2"></div> : "Summarize"}
+                {summarizeLoading ? <div className="loader mr-2"></div> : "Summarize"}
               </button>
               <div className="mt-3"></div>
             </div>

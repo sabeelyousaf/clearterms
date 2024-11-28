@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { FaTimes } from 'react-icons/fa';
 import axios from 'axios';
 import { marked } from 'marked';
-import { docSimplify, generatePDF, generateDocx } from '@/api/routes'; // Ensure routes are correctly imported
+import { docSimplify, generatePDF, generateDocx } from '@/app/api/routes'; // Ensure routes are correctly imported
 
 const SimplifyModal = ({ isOpen, onClose, simplify, documentId }) => {
   const [selectedLanguage, setSelectedLanguage] = useState('en');
@@ -15,7 +15,7 @@ const SimplifyModal = ({ isOpen, onClose, simplify, documentId }) => {
   const handleTranslate = async () => {
     setLoading(true);
     setTranslatedText('');
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
 
     try {
       const response = await axios.post(docSimplify, {
@@ -46,7 +46,7 @@ const SimplifyModal = ({ isOpen, onClose, simplify, documentId }) => {
     }
 
     setLoading(true);
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     const apiUrl = selectedDownloadType === "pdf" ? generatePDF : generateDocx;
 
     try {

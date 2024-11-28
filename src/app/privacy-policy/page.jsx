@@ -64,7 +64,7 @@ export default function Page() {
         <li>Withdraw consent at any time, where applicable</li>
         <li>Request data portability</li>
       </ul>
-      <p className="mb-4">To exercise these rights, please contact us at [support email address].</p>
+      <p className="mb-4">To exercise these rights, please contact us at support@clearterms.ai.</p>
 
       <h3 className="text-xl font-semibold mt-6 mb-2">9. Cookies and Opt-Out Options</h3>
       <p className="mb-4">Clear Terms uses cookies to enhance your experience. You may adjust your browser settings to manage cookies, though this may affect platform functionality.</p>
@@ -74,7 +74,7 @@ export default function Page() {
 
       <h3 className="text-xl font-semibold mt-6 mb-2">11. Contact Us</h3>
       <p className="mb-4">For questions or requests regarding this policy, please contact us at:</p>
-      <p className="mb-4">Email: [support email address]</p>
+      <p className="mb-4">Email: support@clearterms.ai</p>
 
       <p>By using Clear Terms, you agree to this Privacy Policy and the processing of your data as outlined.</p>
     </div>

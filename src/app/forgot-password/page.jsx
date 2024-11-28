@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { forgotPassword } from '@/api/routes';
+import { forgotPassword } from '@/app/api/routes';
 import { ThreeDots } from 'react-loader-spinner';
 
 export default function Signup() {

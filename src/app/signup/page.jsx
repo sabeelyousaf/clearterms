@@ -1,12 +1,12 @@
-"use client";
-import { ThreeDots } from 'react-loader-spinner'; // Import the loader
-import { register } from "@/api/routes";
+"use client"
+import { ThreeDots } from 'react-loader-spinner';
+import { register } from "@/app/api/routes";
 import axios from "axios";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; // Ensure toast styles are included
-import { GoogleLogin } from '@react-oauth/google'; // Import GoogleLogin
+import "react-toastify/dist/ReactToastify.css";
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 
 export default function Signup() {
   const [form, setForm] = useState({
@@ -15,13 +15,12 @@ export default function Signup() {
     email: "",
     password: "",
   });
-  const [isPrivacyChecked, setIsPrivacyChecked] = useState(false); // State for privacy policy checkbox
-  const [isTermsChecked, setIsTermsChecked] = useState(false); // State for terms & conditions checkbox
-  const [isLoading, setIsLoading] = useState(false); // State for loading spinner
+  const [isPrivacyChecked, setIsPrivacyChecked] = useState(false);
+  const [isTermsChecked, setIsTermsChecked] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Check if token exists and redirect to dashboard
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     if (token) {
       window.location.href = "/dashboard";
     }
@@ -34,22 +33,16 @@ export default function Signup() {
   const handleSignup = async (e) => {
     e.preventDefault();
 
-    // Validation for checkboxes
     if (!isPrivacyChecked || !isTermsChecked) {
       toast.error("Please accept the Privacy Policy and Terms & Conditions.", {
         position: "top-right",
         autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
         theme: "light",
       });
       return;
     }
 
-    setIsLoading(true); // Show the loader when the API request starts
+    setIsLoading(true);
 
     try {
       const response = await axios.post(register, form);
@@ -58,50 +51,26 @@ export default function Signup() {
         toast.success("Signup successful! Please verify your email.", {
           position: "top-right",
           autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
           theme: "light",
         });
-
-        // localStorage.setItem("token", response.data.token);
-        // localStorage.setItem("subscription", response.data.subscription);
-        // localStorage.setItem("first_name", response.data.data.first_name);
-        // localStorage.setItem("last_name", response.data.data.last_name);
-        // localStorage.setItem("email", response.data.data.email);
-
-        // Redirect the user to the dashboard or a page telling them to verify their email
-        window.location.href = "/verify-email";  // Show a custom page where they can learn more
+        window.location.href = "/verify-email";
       }
     } catch (error) {
       const errorMessage =
-        error.response && error.response.data && error.response.data.message
-          ? error.response.data.message
-          : "Error signing up. Please try again.";
-
+        error.response?.data?.message || "Error signing up. Please try again.";
       toast.error(errorMessage, {
         position: "top-right",
         autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
         theme: "light",
       });
     } finally {
-      setIsLoading(false); // Hide the loader when the API request is complete
+      setIsLoading(false);
     }
   };
 
-  // Google signup success handler
   const handleGoogleSignup = async (response) => {
     try {
-      const { credential } = response; // Extract Google OAuth credential (ID token)
-
-      // Send the credential to your server to create an account
+      const { credential } = response;
       const res = await axios.post('/your-api-endpoint-to-handle-google-signup', {
         credential,
       });
@@ -110,21 +79,9 @@ export default function Signup() {
         toast.success("Signup successful! Please verify your email.", {
           position: "top-right",
           autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
           theme: "light",
         });
-
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem("subscription", res.data.subscription);
-        localStorage.setItem("first_name", res.data.data.first_name);
-        localStorage.setItem("last_name", res.data.data.last_name);
-        localStorage.setItem("email", res.data.data.email);
-
-        // Redirect to a page telling the user to verify their email
+        sessionStorage.setItem("token", res.data.token);
         window.location.href = "/verify-email";
       }
     } catch (error) {
@@ -136,120 +93,125 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-100">
-      <ToastContainer />
-      <div className="bg-white p-10 rounded-lg shadow-lg w-full max-w-md">
-        <h1 className="text-3xl font-bold text-center mb-8">Create an Account</h1>
-        <form onSubmit={handleSignup}>
-          <div className="mb-6">
-            <label htmlFor="first_name" className="block mb-2 text-sm font-medium text-gray-700">
-              First Name
-            </label>
-            <input
-              type="text"
-              name="first_name"
-              id="first_name"
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none"
-              value={form.first_name}
-              onChange={handleInputChange}
-              placeholder="Enter First Name"
-            />
-          </div>
+    <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}>
+      <div className="min-h-screen flex justify-center items-center bg-gray-100">
+        <ToastContainer />
+        <div className="bg-white p-10 rounded-lg shadow-lg w-full max-w-md">
+          <h1 className="text-3xl font-bold text-center mb-8">Create an Account</h1>
+          <form onSubmit={handleSignup}>
+            <div className="mb-6">
+              <label htmlFor="first_name" className="block mb-2 text-sm font-medium text-gray-700">
+                First Name
+              </label>
+              <input
+                type="text"
+                name="first_name"
+                id="first_name"
+                className="w-full p-3 border border-gray-300 rounded-lg"
+                value={form.first_name}
+                onChange={handleInputChange}
+                placeholder="Enter First Name"
+              />
+            </div>
 
-          <div className="mb-6">
-            <label htmlFor="last_name" className="block mb-2 text-sm font-medium text-gray-700">
-              Surname / Last Name
-            </label>
-            <input
-              type="text"
-              name="last_name"
-              id="last_name"
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none"
-              value={form.last_name}
-              onChange={handleInputChange}
-              placeholder="Enter Last Name"
-            />
-          </div>
+            <div className="mb-6">
+              <label htmlFor="last_name" className="block mb-2 text-sm font-medium text-gray-700">
+                Last Name
+              </label>
+              <input
+                type="text"
+                name="last_name"
+                id="last_name"
+                className="w-full p-3 border border-gray-300 rounded-lg"
+                value={form.last_name}
+                onChange={handleInputChange}
+                placeholder="Enter Last Name"
+              />
+            </div>
 
-          <div className="mb-6">
-            <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-700">
-              Email
-            </label>
-            <input
-              type="email"
-              name="email"
-              id="email"
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none"
-              value={form.email}
-              onChange={handleInputChange}
-              placeholder="Enter Email"
-            />
-          </div>
+            <div className="mb-6">
+              <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-700">
+                Email
+              </label>
+              <input
+                type="email"
+                name="email"
+                id="email"
+                className="w-full p-3 border border-gray-300 rounded-lg"
+                value={form.email}
+                onChange={handleInputChange}
+                placeholder="Enter Email"
+              />
+            </div>
 
-          <div className="mb-6">
-            <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-700">
-              Password
-            </label>
-            <input
-              type="password"
-              name="password"
-              id="password"
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none"
-              value={form.password}
-              onChange={handleInputChange}
-              placeholder="Enter Password"
-            />
-          </div>
+            <div className="mb-6">
+              <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-700">
+                Password
+              </label>
+              <input
+                type="password"
+                name="password"
+                id="password"
+                className="w-full p-3 border border-gray-300 rounded-lg"
+                value={form.password}
+                onChange={handleInputChange}
+                placeholder="Enter Password"
+              />
+            </div>
 
-          <div className="mb-6 flex items-center">
-            <input
-              type="checkbox"
-              id="privacy_policy"
-              className="mr-2"
-              checked={isPrivacyChecked}
-              onChange={(e) => setIsPrivacyChecked(e.target.checked)}
-            />
-            <label htmlFor="privacy_policy" className="text-sm font-medium text-gray-700">
-              I accept the <Link href="/privacy-policy" className="text-indigo-600">Privacy Policy</Link>
-            </label>
-          </div>
+            <div className="flex items-center mb-6">
+              <input
+                type="checkbox"
+                id="privacy-policy"
+                className="mr-2"
+                checked={isPrivacyChecked}
+                onChange={(e) => setIsPrivacyChecked(e.target.checked)}
+              />
+              <label htmlFor="privacy-policy" className="text-sm">
+                I accept the <Link href="/privacy-policy" className="text-indigo-600 font-bold">Privacy Policy</Link>.
+              </label>
+            </div>
 
-          <div className="mb-6 flex items-center">
-            <input
-              type="checkbox"
-              id="terms_conditions"
-              className="mr-2"
-              checked={isTermsChecked}
-              onChange={(e) => setIsTermsChecked(e.target.checked)}
-            />
-            <label htmlFor="terms_conditions" className="text-sm font-medium text-gray-700">
-              I accept the <Link href="/terms-conditions" className="text-indigo-600">Terms & Conditions</Link>
-            </label>
-          </div>
+            <div className="flex items-center mb-6">
+              <input
+                type="checkbox"
+                id="terms"
+                className="mr-2"
+                checked={isTermsChecked}
+                onChange={(e) => setIsTermsChecked(e.target.checked)}
+              />
+              <label htmlFor="terms" className="text-sm">
+                I accept the <Link href="/terms" className="text-indigo-600 font-bold">Terms & Conditions</Link>.
+              </label>
+            </div>
 
-          <button
-            type="submit"
-            className="w-full bg-indigo-600 mb-3 text-white p-3 rounded-lg font-bold hover:bg-indigo-500"
-            disabled={isLoading} // Disable the button when loading
-          >
-            {isLoading ? (
-              <div className="flex justify-center items-center">
-                <ThreeDots color="#fff" height={30} width={30} />
-              </div>
-            ) : (
-              "Sign Up"
-            )}
-          </button>
-        </form>
-        <GoogleLogin
+            <button
+              type="submit"
+              className="w-full mb-4 bg-indigo-600 text-white p-3 rounded-lg font-bold hover:bg-indigo-500 flex items-center justify-center"
+            >
+              {isLoading ? (
+                <ThreeDots height="20" width="20" color="#ffffff" />
+              ) : (
+                "Signup"
+              )}
+            </button>
+
+            {/* Custom Google Signup Button */}
+            <GoogleLogin
           onSuccess={handleGoogleSignup}
-          onError={() => toast.error('Google signup failed', { position: 'top-right', autoClose: 3000 })}
+          onError={() => toast.error("Google signup failed")}
           useOneTap
+          shape="rectangular"
+          theme="outline"
+          text="continue_with" // This is where you set the button text to 'Continue with Google'
         />
-        <p className="mt-6 text-center text-sm">
-          Already have an account? <Link href="/login" className="text-indigo-600 font-bold">Login</Link>
-        </p>
+          </form>
+
+          <p className="mt-6 text-center text-sm">
+            Already have an account? <Link href="/login" className="text-indigo-600 font-bold">Login</Link>
+          </p>
+        </div>
       </div>
-    </div>
+    </GoogleOAuthProvider>
   );
 }

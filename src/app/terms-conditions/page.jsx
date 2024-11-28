@@ -12,7 +12,7 @@ export default function Page() {
       </div>
       <div className="max-w-4xl mx-auto px-4 py-8">
         <h2 className="text-2xl font-bold mb-4">Terms and Conditions</h2>
-        <p className="mb-4">Last Updated: [Date]</p>
+        <p className="mb-4">Last Updated: 29 Nov 2024</p>
 
         <p className="mb-4">
           Welcome to Clear Terms! By accessing or using our website and
@@ -28,7 +28,9 @@ export default function Page() {
           service is not a substitute for professional legal advice.
         </p>
 
-        <h3 className="text-xl font-semibold mt-6 mb-2">2. Acceptance of Terms</h3>
+        <h3 className="text-xl font-semibold mt-6 mb-2">
+          2. Acceptance of Terms
+        </h3>
         <p className="mb-4">
           By using our services, you agree to these Terms and Conditions, along
           with any updates that may be made from time to time. If you do not
@@ -58,7 +60,9 @@ export default function Page() {
           legal advice, please consult a qualified attorney.
         </p>
 
-        <h3 className="text-xl font-semibold mt-6 mb-2">5. User Responsibilities</h3>
+        <h3 className="text-xl font-semibold mt-6 mb-2">
+          5. User Responsibilities
+        </h3>
         <ul className="list-disc list-inside mb-4">
           <li>
             You agree to use Clear Terms responsibly and for lawful purposes
@@ -113,7 +117,9 @@ export default function Page() {
           constitutes acceptance of the revised Terms.
         </p>
 
-        <h3 className="text-xl font-semibold mt-6 mb-2">10. Termination of Service</h3>
+        <h3 className="text-xl font-semibold mt-6 mb-2">
+          10. Termination of Service
+        </h3>
         <p className="mb-4">
           Clear Terms reserves the right to terminate or suspend access to our
           services for any user who violates these Terms and Conditions, at our
@@ -122,15 +128,16 @@ export default function Page() {
 
         <h3 className="text-xl font-semibold mt-6 mb-2">11. Governing Law</h3>
         <p className="mb-4">
-          These Terms and Conditions are governed by the laws of [Country/Region].
-          Any legal disputes arising from the use of Clear Terms will be subject
-          to the exclusive jurisdiction of the courts in [Location].
+          These Terms and Conditions are governed by the laws of
+          [Country/Region]. Any legal disputes arising from the use of Clear
+          Terms will be subject to the exclusive jurisdiction of the courts in
+          [Location].
         </p>
 
         <h3 className="text-xl font-semibold mt-6 mb-2">12. Contact Us</h3>
         <p className="mb-4">
           If you have any questions regarding these Terms and Conditions, please
-          contact us at [support@clearterms.com].
+          contact us at support@clearterms.ai.
         </p>
       </div>
       <Footer />

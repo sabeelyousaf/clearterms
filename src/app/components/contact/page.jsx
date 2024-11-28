@@ -1,5 +1,5 @@
 "use client";
-import { contactMail } from "@/api/routes";
+import { contactMail } from "@/app/api/routes";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaFacebook, FaTwitter, FaLinkedin, FaInstagram } from "react-icons/fa";

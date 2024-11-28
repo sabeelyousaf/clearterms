@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion'; 
 import { FaTimes } from 'react-icons/fa'; 
 import axios from 'axios'; 
-import { docSummarize, downloadPdf, downloadDocx, generatePDF, generateDocx } from '@/api/routes'; // Update this with your actual route imports
+import { docSummarize, downloadPdf, downloadDocx, generatePDF, generateDocx } from '@/app/api/routes'; // Update this with your actual route imports
 import { marked } from 'marked';
 
 const SummaryModal = ({ isOpen, onClose, summary, documentId }) => {
@@ -14,7 +14,7 @@ const SummaryModal = ({ isOpen, onClose, summary, documentId }) => {
   const handleTranslate = async () => {
     setLoading(true); 
     setTranslatedSummary(''); 
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     try {
       const response = await axios.post(docSummarize, {
         document_id: documentId,
@@ -43,7 +43,7 @@ const SummaryModal = ({ isOpen, onClose, summary, documentId }) => {
     }
     
     setLoading(true); 
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     const apiUrl = selectedDownloadType === "pdf" ? generatePDF : generateDocx;
 
     try {

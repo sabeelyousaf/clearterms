@@ -21,7 +21,7 @@ const Header = () => {
 
     // Check if the user is logged in
     useEffect(() => {
-        const token = localStorage.getItem('token');
+        const token = sessionStorage.getItem('token');
         setIsLoggedIn(token !== null); // Update logged-in state
     }, []);
 
@@ -46,7 +46,7 @@ const Header = () => {
                                         <Link href="/dashboard" className="block px-4 py-2 text-sm hover:bg-indigo-100">Dashboard</Link>
                                         <Link href="/dashboard/profile" className="block px-4 py-2 text-sm hover:bg-indigo-100">Settings</Link>
                                         <button onClick={() => {
-                                            localStorage.removeItem('token'); // Clear the token on logout
+                                            sessionStorage.removeItem('token'); // Clear the token on logout
                                             setIsLoggedIn(false); // Update logged-in state
                                             window.location.href = '/'; // Redirect to homepage
                                         }} className="block w-full text-left px-4 py-2 text-sm hover:bg-indigo-100">Logout</button>
@@ -85,7 +85,7 @@ const Header = () => {
                                             <Link href="/dashboard" className="block px-4 py-2 text-sm hover:bg-indigo-100">Dashboard</Link>
                                             <Link href="/dashboard/profile" className="block px-4 py-2 text-sm hover:bg-indigo-100">Settings</Link>
                                             <button onClick={() => {
-                                                localStorage.removeItem('token'); // Clear the token on logout
+                                                sessionStorage.removeItem('token'); // Clear the token on logout
                                                 setIsLoggedIn(false); // Update logged-in state
                                                 window.location.href = '/'; // Redirect to homepage
                                             }} className="block w-full text-left px-4 py-2 text-sm hover:bg-indigo-100">Logout</button>
