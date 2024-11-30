@@ -34,6 +34,8 @@ const Header = () => {
                         <Link href="/#home"><p className="hover:text-indigo-600">Home</p></Link>
                         <Link href="/#features"><p className="hover:text-indigo-600">Features</p></Link>
                         <Link href="/#pricing"><p className="hover:text-indigo-600">Pricing</p></Link>
+                        <Link href="/contact"><p className="hover:text-indigo-600">Contact</p></Link>
+
                         {!isLoggedIn ? (
                             <Link href="/login"><p className="bg-indigo-600 text-white px-6 py-3 rounded-lg">Login</p></Link>
                         ) : (
@@ -73,6 +75,7 @@ const Header = () => {
                             <Link href="#home"><p className="hover:text-indigo-600" onClick={toggleMenu}>Home</p></Link>
                             <Link href="#features"><p className="hover:text-indigo-600" onClick={toggleMenu}>Features</p></Link>
                             <Link href="#pricing"><p className="hover:text-indigo-600" onClick={toggleMenu}>Pricing</p></Link>
+                            <Link href="/contact"><p className="hover:text-indigo-600">Contact</p></Link>
                             {!isLoggedIn ? (
                                 <Link href="/login"><p className="bg-indigo-600 text-white px-6 py-2 rounded-lg">Login</p></Link>
                             ) : (
