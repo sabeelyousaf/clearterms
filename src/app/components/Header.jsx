@@ -72,9 +72,9 @@ const Header = () => {
                         className="md:hidden bg-white shadow-lg absolute top-16 left-0 w-full"
                     >
                         <div className="flex flex-col items-center space-y-4 py-4">
-                            <Link href="#home"><p className="hover:text-indigo-600" onClick={toggleMenu}>Home</p></Link>
-                            <Link href="#features"><p className="hover:text-indigo-600" onClick={toggleMenu}>Features</p></Link>
-                            <Link href="#pricing"><p className="hover:text-indigo-600" onClick={toggleMenu}>Pricing</p></Link>
+                            <Link href="/#home"><p className="hover:text-indigo-600" onClick={toggleMenu}>Home</p></Link>
+                            <Link href="/#features"><p className="hover:text-indigo-600" onClick={toggleMenu}>Features</p></Link>
+                            <Link href="/#pricing"><p className="hover:text-indigo-600" onClick={toggleMenu}>Pricing</p></Link>
                             <Link href="/contact"><p className="hover:text-indigo-600">Contact</p></Link>
                             {!isLoggedIn ? (
                                 <Link href="/login"><p className="bg-indigo-600 text-white px-6 py-2 rounded-lg">Login</p></Link>
