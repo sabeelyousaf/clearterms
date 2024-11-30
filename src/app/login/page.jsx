@@ -8,6 +8,8 @@ import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
 import { googleAuth, login } from '../api/routes'; // Replace with your API route
 import { ThreeDots } from 'react-loader-spinner'; // Import loader spinner component
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 export default function Signup() {
   const [form, setForm] = useState({ email: '', password: '' });
@@ -105,7 +107,8 @@ export default function Signup() {
 
   return (
     <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}>
-    <div className="min-h-screen flex justify-center items-center bg-gray-100">
+    <Header/>
+    <div className="min-h-screen flex justify-center items-center bg-gray-100 mt-5">
       <ToastContainer /> {/* Toast container to show notifications */}
       <div className="bg-white p-10 rounded-lg shadow-lg w-full max-w-md">
         <h1 className="text-3xl font-bold text-center mb-8">Signin to your Account</h1>
@@ -159,6 +162,7 @@ export default function Signup() {
         </p>
       </div>
     </div>
+    <Footer/>
     </GoogleOAuthProvider>
   );
 }

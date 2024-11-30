@@ -7,6 +7,8 @@ import React, { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import Footer from '../components/Footer';
+import Header from '../components/Header';
 
 export default function Signup() {
   const [form, setForm] = useState({
@@ -94,7 +96,8 @@ export default function Signup() {
 
   return (
     <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}>
-      <div className="min-h-screen flex justify-center items-center bg-gray-100">
+      <Header/>
+      <div className="min-h-screen flex justify-center items-center bg-gray-100 mt-5">
         <ToastContainer />
         <div className="bg-white p-10 rounded-lg shadow-lg w-full max-w-md">
           <h1 className="text-3xl font-bold text-center mb-8">Create an Account</h1>
@@ -212,6 +215,7 @@ export default function Signup() {
           </p>
         </div>
       </div>
+      <Footer/>
     </GoogleOAuthProvider>
   );
 }
