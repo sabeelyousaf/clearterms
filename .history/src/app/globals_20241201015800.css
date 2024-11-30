@@ -68,11 +68,6 @@
 .mob-margin{
   margin-top: 40px!important;
 }
-.btn-full{
-  width: 100%;
-  margin-top: 20px!important;
-  margin-left: -20px;
-}
 
 /* Spinner animation */
 @keyframes spin {
