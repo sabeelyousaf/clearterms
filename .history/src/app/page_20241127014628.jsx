@@ -16,6 +16,7 @@ export default function Home() {
       <BenefitsSection />
       <Ctn/>
       <PricingSection />
+      <ContactComponent/>
       <Footer/>
     </>
   );
