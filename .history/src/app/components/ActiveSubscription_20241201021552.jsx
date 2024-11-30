@@ -2,7 +2,7 @@ import React from 'react';
 import { CheckIcon } from "@heroicons/react/outline";
 
 export const ActiveSubscription = ({ title, message, features ,expiryDate}) => (
-    <div className="bg-gray-100  md:h-[590px] px-5 py-8 rounded-3xl shadow-xl">
+    <div className="bg-gray-100 w-100 md:h-[590px] px-5 py-8 rounded-3xl shadow-xl">
         <div className="flex flex-col justify-between h-full">
             <div>
                 <h3 className="text-2xl font-bold mb-4 text-indigo-600">{title}</h3>

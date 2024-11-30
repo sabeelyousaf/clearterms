@@ -125,9 +125,9 @@ const Subscription = () => {
       <Sidebar />
       <div className="p-3 md:p-8 w-full">
         <h1 className="text-3xl font-bold mb-6">Subscription Plans</h1>
-        <div className="flex gap-4 flex-row flex-wrap">
+        <div className="flex gap-4">
           {loading ? (
-            <div className="flex  items-center justify-center h-64">
+            <div className="flex items-center justify-center h-64">
               <svg
                 className="animate-spin h-10 w-10 text-indigo-600"
                 xmlns="http://www.w3.org/2000/svg"

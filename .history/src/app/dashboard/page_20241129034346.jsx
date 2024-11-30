@@ -124,13 +124,13 @@ const Dashboard = () => {
             <div className="bg-white shadow rounded-lg p-6 mb-8">
               <div className="flex flex-row items-center flex-wrap">
             
-               <div className="md:w-3/5 lg:w-3/5 ms-3">
+               <div className="w-3/5 ms-3">
                <h2 className="text-xl font-semibold text-gray-700 mb-0">
                Clear Terms for Google Chrome
                 </h2>
                 <p >Clear Terms google chrome extension offers text simplication, summarisation and translation directly on the web without uploading documents.</p>
                </div>
-               <div className="btn-full" style={{width:"30%"}}>
+               <div style={{width:"30%"}}>
                <button
             type="submit"
             className=" bg-indigo-600 text-end block ms-auto text-white p-3 float-right rounded-lg font-bold hover:bg-indigo-500 flex flex-row gap-3   px-5 "

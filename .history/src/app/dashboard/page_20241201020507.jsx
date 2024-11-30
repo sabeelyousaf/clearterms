@@ -130,7 +130,7 @@ const Dashboard = () => {
                 </h2>
                 <p >Clear Terms google chrome extension offers text simplication, summarisation and translation directly on the web without uploading documents.</p>
                </div>
-               <div className="btn-full" style={{width:"30%"}}>
+               <div style={{width:"30%"}}>
                <button
             type="submit"
             className=" bg-indigo-600 text-end block ms-auto text-white p-3 float-right rounded-lg font-bold hover:bg-indigo-500 flex flex-row gap-3   px-5 "

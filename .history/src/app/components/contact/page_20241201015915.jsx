@@ -53,11 +53,14 @@ const ContactComponent = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
     >
-      <div className="max-w-screen-xl mx-auto md:px-0 px-3 mb-4 ">
+      <div className="max-w-screen-xl mx-auto md:px-0 px-3 mb-4 .mob-margin{
+  margin-top: 40px!important;
+}
+">
         <h2 className="text-4xl font-bold text-center mb-12">Contact Us</h2>
         <div className="flex flex-wrap ">
           {/* Icons Section */}
-          <div className="w-full md:w-1/2 space-y-6 lg:pe-5 md:pe-5 mob-margin">
+          <div className="w-full md:w-1/2 space-y-6 lg:pe-5 md:pe-5">
             <div className="flex items-center gap-4 bg-white p-6 rounded-3xl shadow-lg">
               <FaMapMarkerAlt className="text-indigo-600 w-10 h-10" />
               <div>
