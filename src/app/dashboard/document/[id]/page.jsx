@@ -19,6 +19,9 @@ const [error, setError] = useState(null); // State for errors
 const [selectedDownloadType, setSelectedDownloadType] = useState("");
 const [simplifyloading, setSimplifyLoading] = useState(false);
 const [summarizeLoading, setSummarizeLoading] = useState(false);
+const [reset, setReset] = useState(false);
+
+
 
 
 
@@ -143,6 +146,11 @@ useEffect(() => {
     }
   };
 
+  function resetHandler(){
+    setReset(false)
+    setOutputText("");
+  }
+
   const handleSummarize = async () => {
     // Get the selected text, if any
     const selectedText = window.getSelection().toString();
@@ -171,6 +179,7 @@ useEffect(() => {
     setSummarizeLoading(true);
     const data = await fetchData(url, options);
     setSummarizeLoading(false);
+    setReset(true);
   
     if (data?.result){
       const cleanedText = data.result.replace(/[\*#]/g, "").replace(/---/g, "");
@@ -231,7 +240,7 @@ useEffect(() => {
     setSimplifyLoading(true);
     const data = await fetchData(url, options);
     setSimplifyLoading(false);
-  
+    setReset(true);
     if (data?.result){
       const cleanedText = data.result.replace(/[\*#]/g, "").replace(/---/g, "");
       setOutputText(cleanedText);
@@ -289,6 +298,18 @@ useEffect(() => {
               >
                 {summarizeLoading ? <div className="loader mr-2"></div> : "Summarize"}
               </button>
+
+              {reset && (
+  <button
+    className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none flex items-center"
+    onClick={resetHandler}
+  >
+    Reset
+  </button>
+)}
+
+              
+
               <div className="mt-3"></div>
             </div>
             <div className="flex justify-center mt-4">
@@ -300,39 +321,43 @@ useEffect(() => {
               </label>
               <select
   id="language"
+  disabled={reset === false} // Apply disabled only when reset is true
   className="p-2 border rounded-lg focus:outline-none"
   value={selectedLanguage}
   onChange={handleLanguageChange}
+  
 >
-  <option value="en">English</option>
-  <option value="fr">French</option>
-  <option value="de">German</option>
-  <option value="ru">Russian</option>
-  <option value="es">Spanish</option>
-  <option value="zh">Chinese (Simplified)</option>
+
+
+  <option value="enlish">English</option>
+  <option value="french">French</option>
+  <option value="german">German</option>
+  <option value="russian">Russian</option>
+  <option value="spanish">Spanish</option>
+  <option value="chinese">Chinese (Simplified)</option>
   <option value="zh-TW">Chinese (Traditional)</option>
-  <option value="ar">Arabic</option>
-  <option value="hi">Hindi</option>
-  <option value="ja">Japanese</option>
-  <option value="pt">Portuguese</option>
-  <option value="bn">Bengali</option>
-  <option value="ko">Korean</option>
-  <option value="it">Italian</option>
-  <option value="tr">Turkish</option>
-  <option value="vi">Vietnamese</option>
-  <option value="pl">Polish</option>
-  <option value="uk">Ukrainian</option>
-  <option value="fa">Persian</option>
-  <option value="ms">Malay</option>
-  <option value="id">Indonesian</option>
-  <option value="th">Thai</option>
-  <option value="sw">Swahili</option>
-  <option value="ta">Tamil</option>
-  <option value="te">Telugu</option>
-  <option value="mr">Marathi</option>
-  <option value="ur">Urdu</option>
-  <option value="nl">Dutch</option>
-  <option value="el">Greek</option>
+  <option value="Arabic">Arabic</option>
+  <option value="Hindi">Hindi</option>
+  <option value="Japanese">Japanese</option>
+  <option value="Portuguese">Portuguese</option>
+  <option value="Bengali">Bengali</option>
+  <option value="Korean">Korean</option>
+  <option value="Italian">Italian</option>
+  <option value="Turkish">Turkish</option>
+  <option value="Vietnamese">Vietnamese</option>
+  <option value="Polish">Polish</option>
+  <option value="Ukrainian">Ukrainian</option>
+  <option value="Persian">Persian</option>
+  <option value="Malay">Malay</option>
+  <option value="Indonesian">Indonesian</option>
+  <option value="Thai">Thai</option>
+  <option value="Swahili">Swahili</option>
+  <option value="Tamil">Tamil</option>
+  <option value="Telugu">Telugu</option>
+  <option value="Marathi">Marathi</option>
+  <option value="Urdu">Urdu</option>
+  <option value="Dutch">Dutch</option>
+  <option value="Greek">Greek</option>
   {languages.map((language) => (
     <option key={language} value={language}>
       {language}
