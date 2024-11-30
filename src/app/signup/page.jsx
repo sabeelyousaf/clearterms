@@ -97,10 +97,10 @@ export default function Signup() {
   return (
     <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}>
       <Header/>
-      <div className="min-h-screen flex justify-center items-center bg-gray-100 mt-5">
+      <div className="min-h-screen flex justify-center items-center bg-gray-100 mt-5 py-5">
         <ToastContainer />
-        <div className="bg-white p-10 rounded-lg shadow-lg w-full max-w-md">
-          <h1 className="text-3xl font-bold text-center mb-8">Create an Account</h1>
+        <div className="bg-white p-10 rounded-lg shadow-lg w-full max-w-md mt-5 ">
+          <h1 className="text-3xl font-bold text-center mb-8 mt-5">Create an Account</h1>
           <form onSubmit={handleSignup}>
             <div className="mb-6">
               <label htmlFor="first_name" className="block mb-2 text-sm font-medium text-gray-700">
