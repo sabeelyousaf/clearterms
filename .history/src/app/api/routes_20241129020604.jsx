@@ -11,7 +11,6 @@ const googleAuth= `${BASE_URL}/auth/google`
 const redirectGoogle= `${BASE_URL}/redirect/google`
 
 
-
 // Stripe
 const checkSubscription = `${BASE_URL}/check-subscription`;
 const checkoutSession = `${BASE_URL}/create-checkout-session`;
@@ -20,7 +19,7 @@ const checkoutSession = `${BASE_URL}/create-checkout-session`;
 const allDocs = `${BASE_URL}/docs`;
 const singleDoc = `${BASE_URL}/doc`;
 const uploadDoc = `${BASE_URL}/doc/upload`;
-const deleteDoc = `${BASE_URL}/doc`
+
 // AI
 const docSummarize = `${BASE_URL}/doc/summarize`;
 const docSimplify = `${BASE_URL}/doc/simplify`;
@@ -47,6 +46,5 @@ export {
     resetPassword,
     googleAuth,
     contactMail,
-    redirectGoogle,
-    deleteDoc
+    redirectGoogle
 };

@@ -6,7 +6,6 @@ import Sidebar from "@/app/components/dashboard/Sidebar";
 import { FaArrowLeft, FaFileAlt, FaUpload } from "react-icons/fa";
 import { singleDoc, downloadContent } from "@/app/api/routes";
 import Link from "next/link";
-import { ThreeDots } from 'react-loader-spinner'
 const DocumentDetails = ({ params }) => {
 const { id } = params; // Get the document ID from the URL
 const [inputText, setInputText] = useState("");
@@ -17,7 +16,6 @@ const [selectedLanguage, setSelectedLanguage] = useState("english");
 const [languages, setLanguages] = useState([]);
 const [documentContent, setDocumentContent] = useState(null);
 const [error, setError] = useState(null); // State for errors
-const [translate, setTranslate] = useState(false); // State for errors
 const [selectedDownloadType, setSelectedDownloadType] = useState("");
 const [simplifyloading, setSimplifyLoading] = useState(false);
 const [summarizeLoading, setSummarizeLoading] = useState(false);
@@ -145,60 +143,31 @@ useEffect(() => {
   };
   
   const handleTranslate = async (language = selectedLanguage) => {
-    // Set the content to translate: prioritize `outputText`, fallback to `inputText`
-    const contentToTranslate = outputText || inputText || "No content available for translation.";
-    const url = "https://chatgpt-42.p.rapidapi.com/gpt4";
+    const url = "https://google-translator9.p.rapidapi.com/v2";
     const options = {
       method: "POST",
       headers: {
-        "x-rapidapi-key": "455f35f29bmsh9904fd3cfaaaf35p1856acjsnf15b267343bb", // Replace with your RapidAPI key
-        "x-rapidapi-host": "chatgpt-42.p.rapidapi.com",
+        "x-rapidapi-key": "a596b71e1cmsh581941e025369c6p1ec95fjsn07da0a85bf90",
+        "x-rapidapi-host": "google-translator9.p.rapidapi.com",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        messages: [
-          {
-            role: "system",
-            content: "You are a helpful assistant that translates text.",
-          },
-          {
-            role: "user",
-            content: `Translate the following text to ${language}: ${contentToTranslate}`,
-          },
-        ],
-        max_tokens: 500,
-        temperature: 0.3,
+        q: outputText || inputText,
+        target: language, // Use provided language or selectedLanguage
       }),
     };
   
-    // Show loading state
-    setTranslate(true);
+    setSummarizeLoading(true);
+    const data = await fetchData(url, options);
+    setSummarizeLoading(false);
   
-    try {
-      // Fetch data
-      const data = await fetchData(url, options);
-  
-      // Hide loading state
-      setTranslate(false);
-  
-      // Set translated text if the API responds successfully
-      if (data?.result) {
-        const cleanedText = data.result
-          .replace(/[\*#]/g, "") // Remove Markdown symbols
-          .replace(/---/g, ""); // Remove any unnecessary separators
-        setOutputText(cleanedText);
-        setReset(true);
-      } else {
-        console.error("Translation failed:", data);
-      }
-    } catch (error) {
-      // Handle errors and hide loading state
-      setTranslate(false);
-      console.error("Error during translation:", error);
+    if (data?.data?.translations?.[0]?.translatedText) {
+      setOutputText(data.data.translations[0].translatedText);
     }
   };
   
   
+
 
   const fetchData = async (url, options) => {
     try {
@@ -279,7 +248,6 @@ useEffect(() => {
       }),
     };
   
- 
     setSimplifyLoading(true);
     const data = await fetchData(url, options);
     setSimplifyLoading(false);
@@ -326,21 +294,6 @@ useEffect(() => {
                 placeholder="Output will appear here..."
               ></textarea>
             </div>
-            <div className="text-center mb-4">
-  {translate && (
-    <div className="flex flex-col items-center">
-      <ThreeDots 
-        height="80" 
-        width="80" 
-        radius="9"
-        color="#ff4500" 
-        ariaLabel="three-dots-loading"
-        visible={true}
-      />
-      <p className="text-red-500 mt-2">Translating...</p>
-    </div>
-  )}
-</div>
             <div className="flex justify-center space-x-4 mb-4">
               <button
                 className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none flex items-center"
@@ -379,12 +332,11 @@ useEffect(() => {
               </label>
               <select
   id="language"
-  disabled={!reset} // Equivalent to `reset === false`
-  className={`p-2 border rounded-lg focus:outline-none ${
-    reset ? "bg-white text-black cursor-pointer" : "bg-gray-100 text-gray-400 cursor-not-allowed"
-  }`}
+  disabled={reset === false} // Apply disabled only when reset is true
+  className="p-2 border rounded-lg focus:outline-none"
   value={selectedLanguage}
   onChange={handleLanguageChange}
+  
 >
 
 
@@ -424,16 +376,11 @@ useEffect(() => {
   ))}
 </select>
 
-<select
-  className={`border rounded py-1 px-2 ms-4 ${
-    reset
-      ? "bg-white text-black cursor-pointer"
-      : "bg-gray-100 text-gray-400 cursor-not-allowed"
-  }`}
-  value={selectedDownloadType}
-  onChange={(e) => setSelectedDownloadType(e.target.value)}
-  disabled={!reset} // Example condition to disable
->
+              <select
+                className="border rounded py-1 px-2 ms-4"
+                value={selectedDownloadType}
+                onChange={(e) => setSelectedDownloadType(e.target.value)}
+              >
                 <option value="" disabled>
                   Choose Download Type
                 </option>
@@ -443,17 +390,12 @@ useEffect(() => {
                 <option value="rtf">RTF</option>
               </select>
               <button
-  className={`py-1 px-3 rounded ml-2 ${
-    reset
-      ? "bg-blue-500 text-white cursor-pointer"
-      : "bg-gray-400 text-gray-200 cursor-not-allowed"
-  }`}
-  onClick={handleDownload}
-  disabled={!reset} // Equivalent to `reset === false`
->
-  Download
-</button>
-
+                className="bg-blue-500 text-white py-1 px-3 rounded ml-2"
+                onClick={handleDownload}
+                disabled={loading || !selectedDownloadType}
+              >
+                Download
+              </button>
             </div>
           </div>
         </div>

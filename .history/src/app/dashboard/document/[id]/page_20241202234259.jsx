@@ -6,7 +6,6 @@ import Sidebar from "@/app/components/dashboard/Sidebar";
 import { FaArrowLeft, FaFileAlt, FaUpload } from "react-icons/fa";
 import { singleDoc, downloadContent } from "@/app/api/routes";
 import Link from "next/link";
-import { ThreeDots } from 'react-loader-spinner'
 const DocumentDetails = ({ params }) => {
 const { id } = params; // Get the document ID from the URL
 const [inputText, setInputText] = useState("");
@@ -17,7 +16,6 @@ const [selectedLanguage, setSelectedLanguage] = useState("english");
 const [languages, setLanguages] = useState([]);
 const [documentContent, setDocumentContent] = useState(null);
 const [error, setError] = useState(null); // State for errors
-const [translate, setTranslate] = useState(false); // State for errors
 const [selectedDownloadType, setSelectedDownloadType] = useState("");
 const [simplifyloading, setSimplifyLoading] = useState(false);
 const [summarizeLoading, setSummarizeLoading] = useState(false);
@@ -145,8 +143,6 @@ useEffect(() => {
   };
   
   const handleTranslate = async (language = selectedLanguage) => {
-    // Set the content to translate: prioritize `outputText`, fallback to `inputText`
-    const contentToTranslate = outputText || inputText || "No content available for translation.";
     const url = "https://chatgpt-42.p.rapidapi.com/gpt4";
     const options = {
       method: "POST",
@@ -163,7 +159,7 @@ useEffect(() => {
           },
           {
             role: "user",
-            content: `Translate the following text to ${language}: ${contentToTranslate}`,
+            content: `Translate the following text to ${language}: ${outputText || inputText}`,
           },
         ],
         max_tokens: 500,
@@ -171,33 +167,24 @@ useEffect(() => {
       }),
     };
   
-    // Show loading state
-    setTranslate(true);
-  
     try {
-      // Fetch data
-      const data = await fetchData(url, options);
+      setSummarizeLoading(true);
   
-      // Hide loading state
-      setTranslate(false);
+      const response = await fetch(url, options);
+      const data = await response.json();
   
-      // Set translated text if the API responds successfully
-      if (data?.result) {
-        const cleanedText = data.result
-          .replace(/[\*#]/g, "") // Remove Markdown symbols
-          .replace(/---/g, ""); // Remove any unnecessary separators
-        setOutputText(cleanedText);
-        setReset(true);
+      setSummarizeLoading(false);
+  
+      if (data?.choices?.[0]?.message?.content) {
+        setOutputText(data.choices[0].message.content.trim());
       } else {
         console.error("Translation failed:", data);
       }
     } catch (error) {
-      // Handle errors and hide loading state
-      setTranslate(false);
+      setSummarizeLoading(false);
       console.error("Error during translation:", error);
     }
   };
-  
   
 
   const fetchData = async (url, options) => {
@@ -279,7 +266,6 @@ useEffect(() => {
       }),
     };
   
- 
     setSimplifyLoading(true);
     const data = await fetchData(url, options);
     setSimplifyLoading(false);
@@ -326,21 +312,6 @@ useEffect(() => {
                 placeholder="Output will appear here..."
               ></textarea>
             </div>
-            <div className="text-center mb-4">
-  {translate && (
-    <div className="flex flex-col items-center">
-      <ThreeDots 
-        height="80" 
-        width="80" 
-        radius="9"
-        color="#ff4500" 
-        ariaLabel="three-dots-loading"
-        visible={true}
-      />
-      <p className="text-red-500 mt-2">Translating...</p>
-    </div>
-  )}
-</div>
             <div className="flex justify-center space-x-4 mb-4">
               <button
                 className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none flex items-center"
@@ -426,13 +397,13 @@ useEffect(() => {
 
 <select
   className={`border rounded py-1 px-2 ms-4 ${
-    reset
+    selectedDownloadType
       ? "bg-white text-black cursor-pointer"
       : "bg-gray-100 text-gray-400 cursor-not-allowed"
   }`}
   value={selectedDownloadType}
   onChange={(e) => setSelectedDownloadType(e.target.value)}
-  disabled={!reset} // Example condition to disable
+  disabled={!selectedDownloadType} // Example condition to disable
 >
                 <option value="" disabled>
                   Choose Download Type

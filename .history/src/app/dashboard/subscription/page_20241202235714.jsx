@@ -150,7 +150,7 @@ const Subscription = () => {
   ) : (
     <>
       {subscription.map((sub) => (
-        <div key={sub.id} className="bg-white rounded-lg  p-4">
+        <div key={sub.id} className="bg-white rounded-lg shadow p-4">
           {sub.type === "daily" && (
             <ActiveSubscription
               title="Daily Plan"

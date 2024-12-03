@@ -54,32 +54,20 @@ const Dashboard = () => {
   };
 
   const handleDeleteDocument = async (id) => {
-    // Show a confirmation prompt
-    const confirmDelete = window.confirm("Are you sure you want to delete this document?");
-    if (!confirmDelete) return; // Exit if user cancels
-  
     const token = sessionStorage.getItem("token");
     try {
-      const response = await axios.delete(`${deleteDoc}/${id}`, {
+      await axios.delete(`${deleteDoc}/doc/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       });
-  
-      if (response.status === 200) {
-        // Optionally refetch documents or update the state
-        alert("Document deleted successfully.");
-        await fetchDocs(); // Refetch updated documents list
-      } else {
-        alert("Failed to delete the document.");
-      }
+      await fetchDocs(); // Refresh documents
+      await fetchSubscription(); // Refresh subscription
     } catch (error) {
       console.error("Error deleting document:", error);
-      alert("An error occurred while deleting the document.");
     }
   };
-  
 
   const handleFileUpload = async (e) => {
     const uploadedFiles = Array.from(e.target.files);

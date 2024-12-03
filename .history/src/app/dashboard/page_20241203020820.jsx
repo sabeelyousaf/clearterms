@@ -37,7 +37,7 @@ const Dashboard = () => {
   const fetchDocs = async () => {
     const token = sessionStorage.getItem("token");
     try {
-      const response = await axios.get(allDocs, {
+      const response = await axios.delete(allDocs, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -60,7 +60,7 @@ const Dashboard = () => {
   
     const token = sessionStorage.getItem("token");
     try {
-      const response = await axios.delete(`${deleteDoc}/${id}`, {
+      const response = await axios.get(`${deleteDoc}/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",

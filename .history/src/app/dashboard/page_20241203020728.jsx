@@ -60,7 +60,7 @@ const Dashboard = () => {
   
     const token = sessionStorage.getItem("token");
     try {
-      const response = await axios.delete(`${deleteDoc}/${id}`, {
+      const response = await axios.get(`${deleteDoc}/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",

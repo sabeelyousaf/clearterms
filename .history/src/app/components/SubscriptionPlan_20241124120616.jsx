@@ -1,7 +1,7 @@
 import React from 'react'
 import { CheckIcon } from "@heroicons/react/outline";
 export const SubscriptionPlan = ({ title, price, features, loading, handleCheckout ,withPrice }) => (
-    <div className="bg-white max-w-[400px] md:h-[590px] px-5 py-8 rounded-3xl shadow-xl mt-3">
+    <div className="bg-white max-w-[400px] md:h-[590px] px-5 py-8 rounded-3xl shadow-xl">
         <div className="flex flex-col justify-between h-full">
             <div>
                 <h3 className="text-2xl font-bold mb-4">{title}</h3>

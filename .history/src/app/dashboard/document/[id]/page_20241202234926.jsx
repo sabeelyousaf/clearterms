@@ -6,7 +6,6 @@ import Sidebar from "@/app/components/dashboard/Sidebar";
 import { FaArrowLeft, FaFileAlt, FaUpload } from "react-icons/fa";
 import { singleDoc, downloadContent } from "@/app/api/routes";
 import Link from "next/link";
-import { ThreeDots } from 'react-loader-spinner'
 const DocumentDetails = ({ params }) => {
 const { id } = params; // Get the document ID from the URL
 const [inputText, setInputText] = useState("");
@@ -326,21 +325,9 @@ useEffect(() => {
                 placeholder="Output will appear here..."
               ></textarea>
             </div>
-            <div className="text-center mb-4">
-  {translate && (
-    <div className="flex flex-col items-center">
-      <ThreeDots 
-        height="80" 
-        width="80" 
-        radius="9"
-        color="#ff4500" 
-        ariaLabel="three-dots-loading"
-        visible={true}
-      />
-      <p className="text-red-500 mt-2">Translating...</p>
-    </div>
-  )}
-</div>
+            <div className="text-center">
+            {translate && <p className="text-red-500 mb-5">Translating...</p>}
+            </div>
             <div className="flex justify-center space-x-4 mb-4">
               <button
                 className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none flex items-center"

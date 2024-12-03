@@ -6,7 +6,6 @@ import Sidebar from "@/app/components/dashboard/Sidebar";
 import { FaArrowLeft, FaFileAlt, FaUpload } from "react-icons/fa";
 import { singleDoc, downloadContent } from "@/app/api/routes";
 import Link from "next/link";
-import { ThreeDots } from 'react-loader-spinner'
 const DocumentDetails = ({ params }) => {
 const { id } = params; // Get the document ID from the URL
 const [inputText, setInputText] = useState("");
@@ -17,7 +16,8 @@ const [selectedLanguage, setSelectedLanguage] = useState("english");
 const [languages, setLanguages] = useState([]);
 const [documentContent, setDocumentContent] = useState(null);
 const [error, setError] = useState(null); // State for errors
-const [translate, setTranslate] = useState(false); // State for errors
+const [translate, setTranslate] = useState(null); // State for errors
+
 const [selectedDownloadType, setSelectedDownloadType] = useState("");
 const [simplifyloading, setSimplifyLoading] = useState(false);
 const [summarizeLoading, setSummarizeLoading] = useState(false);
@@ -172,14 +172,14 @@ useEffect(() => {
     };
   
     // Show loading state
-    setTranslate(true);
+    setSummarizeLoading(true);
   
     try {
       // Fetch data
       const data = await fetchData(url, options);
   
       // Hide loading state
-      setTranslate(false);
+      setSummarizeLoading(false);
   
       // Set translated text if the API responds successfully
       if (data?.result) {
@@ -193,7 +193,7 @@ useEffect(() => {
       }
     } catch (error) {
       // Handle errors and hide loading state
-      setTranslate(false);
+      setSummarizeLoading(false);
       console.error("Error during translation:", error);
     }
   };
@@ -279,7 +279,6 @@ useEffect(() => {
       }),
     };
   
- 
     setSimplifyLoading(true);
     const data = await fetchData(url, options);
     setSimplifyLoading(false);
@@ -326,21 +325,6 @@ useEffect(() => {
                 placeholder="Output will appear here..."
               ></textarea>
             </div>
-            <div className="text-center mb-4">
-  {translate && (
-    <div className="flex flex-col items-center">
-      <ThreeDots 
-        height="80" 
-        width="80" 
-        radius="9"
-        color="#ff4500" 
-        ariaLabel="three-dots-loading"
-        visible={true}
-      />
-      <p className="text-red-500 mt-2">Translating...</p>
-    </div>
-  )}
-</div>
             <div className="flex justify-center space-x-4 mb-4">
               <button
                 className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none flex items-center"
