@@ -65,7 +65,6 @@ const Subscription = () => {
     } catch (error) {
       console.error("Error fetching subscription:", error);
     } finally {
-      setLoading(false);
      
     }
   };
@@ -131,7 +130,7 @@ const Subscription = () => {
         <h1 className="text-3xl font-bold mb-6">Subscription Plans</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {loading ? (
-  <div className="flex items-center justify-center h-full absolute" style={{  left:"50%",top:"0%"}}>
+  <div className="pabsolute" style={{ left:"50%" }}>
     <svg
       className="animate-spin h-10 w-10 text-indigo-600"
       xmlns="http://www.w3.org/2000/svg"

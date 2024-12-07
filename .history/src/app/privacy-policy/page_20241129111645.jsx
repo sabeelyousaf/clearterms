@@ -34,7 +34,10 @@ export default function Page() {
         </p>
 
         <p className="mb-4">
-          <strong>b. Document Data:</strong> When you upload or analyze documents through Clear Terms, the content is processed and temporarily stored to provide our services. If you choose to save a document in your account, it will be stored securely, but you retain the option to delete it at any time.
+          <strong>b. Document Data:</strong> When you upload or analyze
+          documents through Clear Terms, the content is processed to provide our
+          services but is not stored permanently unless you choose to save it in
+          your account.
         </p>
 
         <p className="mb-4">
@@ -69,7 +72,10 @@ export default function Page() {
           3. Document Privacy and Data Handling
         </h3>
         <p className="mb-4">
-        Documents uploaded for simplification, summarization, or translation are processed temporarily to provide our services. Clear Terms saves document data for a limited period to ensure service continuity, but users have the option to delete their documents at any time. Unsaved document content is deleted automatically after the retention period expires.
+          Documents uploaded for simplification, summarization, or translation
+          are processed on a temporary basis. We do not permanently store
+          document data unless you choose to save it within your account.
+          Unsaved document content is deleted immediately after processing.
         </p>
 
         <h3 className="text-xl font-semibold mt-6 mb-2">

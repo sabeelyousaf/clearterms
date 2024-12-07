@@ -14,6 +14,7 @@ const [outputText, setOutputText] = useState("");
 const [isLoading, setIsLoading] = useState(false);
 const [loading, setLoading] = useState(false);
 const [selectedLanguage, setSelectedLanguage] = useState("english");
+const [languages, setLanguages] = useState([]);
 const [documentContent, setDocumentContent] = useState(null);
 const [error, setError] = useState(null); // State for errors
 const [translate, setTranslate] = useState(false); // State for errors
@@ -30,6 +31,7 @@ const [docName,SetdocName]= useState('');
 
 useEffect(() => {
     fetchDocumentContent();
+    populateLanguages();
   }, []);
 
   const handleDownload = async () => {
@@ -115,10 +117,11 @@ useEffect(() => {
 
   const handleLanguageChange = async (e) => {
     const selectedLang = e.target.value;
+    setSelectedLanguage(selectedLang);
   
     // Trigger translation API call if outputText or inputText exists
     if (outputText || inputText) {
-      await handleTranslate(selectedLanguage);
+      await handleTranslate(selectedLang);
     }
   };
   
@@ -365,45 +368,45 @@ useEffect(() => {
               </label>
               <select
   id="language"
-  disabled={!reset} // Enable or disable based on `reset`
+  disabled={!reset} // Equivalent to `reset === false`
   className={`p-2 border rounded-lg focus:outline-none ${
     reset ? "bg-white text-black cursor-pointer" : "bg-gray-100 text-gray-400 cursor-not-allowed"
   }`}
   value={selectedLanguage}
-  onChange={(e) => setSelectedLanguage(e.target.value)} // Update state on change
+  
 >
-  <option value="english">English</option>
+
+
+  <option value="enlish">English</option>
   <option value="french">French</option>
   <option value="german">German</option>
   <option value="russian">Russian</option>
   <option value="spanish">Spanish</option>
   <option value="chinese">Chinese (Simplified)</option>
   <option value="zh-TW">Chinese (Traditional)</option>
-  <option value="arabic">Arabic</option>
-  <option value="hindi">Hindi</option>
-  <option value="japanese">Japanese</option>
-  <option value="portuguese">Portuguese</option>
-  <option value="bengali">Bengali</option>
-  <option value="korean">Korean</option>
-  <option value="italian">Italian</option>
-  <option value="turkish">Turkish</option>
-  <option value="vietnamese">Vietnamese</option>
-  <option value="polish">Polish</option>
-  <option value="ukrainian">Ukrainian</option>
-  <option value="persian">Persian</option>
-  <option value="malay">Malay</option>
-  <option value="indonesian">Indonesian</option>
-  <option value="thai">Thai</option>
-  <option value="swahili">Swahili</option>
-  <option value="tamil">Tamil</option>
-  <option value="telugu">Telugu</option>
-  <option value="marathi">Marathi</option>
-  <option value="urdu">Urdu</option>
-  <option value="dutch">Dutch</option>
-  <option value="greek">Greek</option>
- 
+  <option value="Arabic">Arabic</option>
+  <option value="Hindi">Hindi</option>
+  <option value="Japanese">Japanese</option>
+  <option value="Portuguese">Portuguese</option>
+  <option value="Bengali">Bengali</option>
+  <option value="Korean">Korean</option>
+  <option value="Italian">Italian</option>
+  <option value="Turkish">Turkish</option>
+  <option value="Vietnamese">Vietnamese</option>
+  <option value="Polish">Polish</option>
+  <option value="Ukrainian">Ukrainian</option>
+  <option value="Persian">Persian</option>
+  <option value="Malay">Malay</option>
+  <option value="Indonesian">Indonesian</option>
+  <option value="Thai">Thai</option>
+  <option value="Swahili">Swahili</option>
+  <option value="Tamil">Tamil</option>
+  <option value="Telugu">Telugu</option>
+  <option value="Marathi">Marathi</option>
+  <option value="Urdu">Urdu</option>
+  <option value="Dutch">Dutch</option>
+  <option value="Greek">Greek</option>
 </select>
-
 
 <select
   className={`border rounded py-1 px-2 ms-4 ${

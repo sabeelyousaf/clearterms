@@ -115,10 +115,11 @@ useEffect(() => {
 
   const handleLanguageChange = async (e) => {
     const selectedLang = e.target.value;
+    setSelectedLanguage(selectedLang);
   
     // Trigger translation API call if outputText or inputText exists
     if (outputText || inputText) {
-      await handleTranslate(selectedLanguage);
+      await handleTranslate(selectedLang);
     }
   };
   
@@ -165,7 +166,7 @@ useEffect(() => {
           .replace(/[\*#]/g, "") // Remove Markdown symbols
           .replace(/---/g, ""); // Remove any unnecessary separators
         setOutputText(cleanedText);
-        setReset(true);
+       
       } else {
         console.error("Translation failed:", data);
       }

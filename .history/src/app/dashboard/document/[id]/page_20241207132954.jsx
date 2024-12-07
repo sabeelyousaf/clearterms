@@ -115,9 +115,11 @@ useEffect(() => {
 
   const handleLanguageChange = async (e) => {
     const selectedLang = e.target.value;
+
   
     // Trigger translation API call if outputText or inputText exists
     if (outputText || inputText) {
+      alert(selectedLanguage);
       await handleTranslate(selectedLanguage);
     }
   };
