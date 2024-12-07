@@ -71,7 +71,23 @@ const Dashboard = () => {
     }
   };
 
- 
+  const handleDeleteDocument = async (id) => {
+    const token = sessionStorage.getItem("token");
+    try {
+      const response = await axios.get(`${deleteDoc}/doc/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      setSubscription(response.data.subscription);
+    } catch (error) {
+      console.error("Error fetching subscription:", error);
+    } finally {
+      setIsCheckingSubscription(false); // Hide subscription loader
+    }
+  };
+
   
 
   const formatDate = (dateString) => {

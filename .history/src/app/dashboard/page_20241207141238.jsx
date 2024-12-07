@@ -71,7 +71,23 @@ const Dashboard = () => {
     }
   };
 
- 
+  const handleDeleteDocument = async (id) => {
+    const token = sessionStorage.getItem("token");
+    try {
+      const response = await axios.get(`${deleteDoc}/doc/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      setSubscription(response.data.subscription);
+    } catch (error) {
+      console.error("Error fetching subscription:", error);
+    } finally {
+      setIsCheckingSubscription(false); // Hide subscription loader
+    }
+  };
+
   
 
   const formatDate = (dateString) => {
@@ -265,6 +281,18 @@ const Dashboard = () => {
                       >
                         Delete
                       </button>
+                      {/* <button
+                        className="bg-blue-500 text-white py-1 md:px-3 rounded px-1 mr-2"
+                        onClick={() => handleSummarize(file.id)}
+                      >
+                        Summarize
+                      </button>
+                      <button
+                        className="bg-green-500 text-white py-1 md:px-3 rounded px-1"
+                        onClick={() => handleSimplify(file.id)}
+                      >
+                        Simplify
+                      </button> */}
                     </td>
                   </tr>
                 ))}
