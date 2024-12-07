@@ -61,7 +61,7 @@ const PricingSection = () => {
 
                     {/* Dail Plan */}
                     <motion.div
-                        className="bg-white max-w-[400px] md:h-auto px-5 py-8 rounded-3xl shadow-xl transition-transform transform hover:scale-105"
+                        className="bg-white max-w-[400px] md:h-[590px] px-5 py-8 rounded-3xl shadow-xl transition-transform transform hover:scale-105"
                         whileHover={{ scale: 1.05 }}
                     >
                         <div className='flex flex-col justify-between h-full'>
@@ -73,7 +73,7 @@ const PricingSection = () => {
 
                         {/* Features List */}
                         <ul className="list-none mb-6">
-                            {daily.map((feature, index) => (
+                            {features.map((feature, index) => (
                                 <li key={index} className="flex items-center mb-2 text-left">
                                     <CheckIcon className="w-5 h-5 text-green-500 mr-2" />
                                     <span>{feature}</span>
@@ -91,7 +91,7 @@ const PricingSection = () => {
                     </motion.div>
                     {/* Monthly */}
                     <motion.div
-                        className="bg-white max-w-[400px] md:h-auto px-5 py-8 rounded-3xl shadow-xl transition-transform transform hover:scale-105"
+                        className="bg-white max-w-[400px] md:h-[590px] px-5 py-8 rounded-3xl shadow-xl transition-transform transform hover:scale-105"
                         whileHover={{ scale: 1.05 }}
                     >
                         <div className='flex flex-col justify-between h-full'>
@@ -103,7 +103,7 @@ const PricingSection = () => {
 
                         {/* Features List */}
                         <ul className="list-none mb-6">
-                            {monthly.map((feature, index) => (
+                            {features.map((feature, index) => (
                                 <li key={index} className="flex items-center mb-2 text-left">
                                     <CheckIcon className="w-5 h-5 text-green-500 mr-2" />
                                     <span>{feature}</span>
@@ -121,7 +121,7 @@ const PricingSection = () => {
                     </motion.div>
                     {/* Yearly */}
                     <motion.div
-                        className="bg-white max-w-[400px] md:h-auto px-5 py-8 rounded-3xl shadow-xl transition-transform transform hover:scale-105"
+                        className="bg-white max-w-[400px] md:h-[590px] px-5 py-8 rounded-3xl shadow-xl transition-transform transform hover:scale-105"
                         whileHover={{ scale: 1.05 }}
                     >
                         <div className='flex flex-col justify-between h-full'>
@@ -132,7 +132,7 @@ const PricingSection = () => {
 
                         {/* Features List */}
                         <ul className="list-none mb-6">
-                            {yearly.map((feature, index) => (
+                            {features.map((feature, index) => (
                                 <li key={index} className="flex items-center mb-2 text-left">
                                     <CheckIcon className="w-5 h-5 text-green-500 mr-2" />
                                     <span>{feature}</span>

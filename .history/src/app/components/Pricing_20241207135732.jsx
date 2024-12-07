@@ -91,7 +91,7 @@ const PricingSection = () => {
                     </motion.div>
                     {/* Monthly */}
                     <motion.div
-                        className="bg-white max-w-[400px] md:h-auto px-5 py-8 rounded-3xl shadow-xl transition-transform transform hover:scale-105"
+                        className="bg-white max-w-[400px] md:h-[590px] px-5 py-8 rounded-3xl shadow-xl transition-transform transform hover:scale-105"
                         whileHover={{ scale: 1.05 }}
                     >
                         <div className='flex flex-col justify-between h-full'>
@@ -121,7 +121,7 @@ const PricingSection = () => {
                     </motion.div>
                     {/* Yearly */}
                     <motion.div
-                        className="bg-white max-w-[400px] md:h-auto px-5 py-8 rounded-3xl shadow-xl transition-transform transform hover:scale-105"
+                        className="bg-white max-w-[400px] md:h-[590px] px-5 py-8 rounded-3xl shadow-xl transition-transform transform hover:scale-105"
                         whileHover={{ scale: 1.05 }}
                     >
                         <div className='flex flex-col justify-between h-full'>
