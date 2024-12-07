@@ -117,27 +117,14 @@ useEffect(() => {
     const selectedLang = e.target.value;
   
     // Trigger translation API call if outputText or inputText exists
+    if (outputText || inputText) {
       await handleTranslate(selectedLanguage);
+    }
   };
   
   const handleTranslate = async (language = selectedLanguage) => {
-    // Function to sanitize text
-    const sanitizeText = (text) => text.replace(/[\*#]/g, "").replace(/---/g, "").trim();
-  
-    // Determine content to translate: prioritize `outputText`, fallback to `documentContent`
-    const contentToTranslate = outputText?.trim()
-      ? sanitizeText(outputText)
-      : documentContent?.trim()
-      ? sanitizeText(documentContent)
-      : "No content available for translation.";
-  
-    // Handle case when there's no content to translate
-    if (contentToTranslate === "No content available for translation.") {
-      console.warn("No content provided for translation.");
-      return;
-    }
-  
-    // Prepare API request details
+    // Set the content to translate: prioritize `outputText`, fallback to `inputText`
+    const contentToTranslate = outputText || inputText || "No content available for translation.";
     const url = "https://chatgpt-42.p.rapidapi.com/gpt4";
     const options = {
       method: "POST",
@@ -166,15 +153,17 @@ useEffect(() => {
     setTranslate(true);
   
     try {
-      // Fetch data from the API
+      // Fetch data
       const data = await fetchData(url, options);
   
       // Hide loading state
       setTranslate(false);
   
-      // Handle API response
+      // Set translated text if the API responds successfully
       if (data?.result) {
-        const cleanedText = sanitizeText(data.result);
+        const cleanedText = data.result
+          .replace(/[\*#]/g, "") // Remove Markdown symbols
+          .replace(/---/g, ""); // Remove any unnecessary separators
         setOutputText(cleanedText);
         setReset(true);
       } else {
@@ -345,14 +334,14 @@ useEffect(() => {
               >
                 {summarizeLoading ? <div className="loader mr-2"></div> : "Summarize"}
               </button>
-            
+              {reset && (
   <button
     className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none flex items-center"
     onClick={handleLanguageChange}
   >
     Translate
   </button>
-
+)}
 
               {reset && (
   <button
@@ -376,7 +365,9 @@ useEffect(() => {
               </label>
               <select
   id="language"
-  className={`p-2 border rounded-lg focus:outline-none bg-white text-black cursor-pointer"
+  disabled={!reset} // Enable or disable based on `reset`
+  className={`p-2 border rounded-lg focus:outline-none ${
+    reset ? "bg-white text-black cursor-pointer" : "bg-gray-100 text-gray-400 cursor-not-allowed"
   }`}
   value={selectedLanguage}
   onChange={(e) => setSelectedLanguage(e.target.value)} // Update state on change

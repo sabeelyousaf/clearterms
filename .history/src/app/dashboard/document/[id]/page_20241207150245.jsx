@@ -115,20 +115,25 @@ useEffect(() => {
 
   const handleLanguageChange = async (e) => {
     const selectedLang = e.target.value;
-  
+    alert('working');
     // Trigger translation API call if outputText or inputText exists
+    if (outputText || inputText) {
       await handleTranslate(selectedLanguage);
+    }
   };
   
   const handleTranslate = async (language = selectedLanguage) => {
     // Function to sanitize text
     const sanitizeText = (text) => text.replace(/[\*#]/g, "").replace(/---/g, "").trim();
   
-    // Determine content to translate: prioritize `outputText`, fallback to `documentContent`
+    // Function to truncate text if it exceeds a certain length
+    const truncateContent = (text, maxLength = 500) => text.slice(0, maxLength);
+  
+    // Determine content to translate: prioritize `outputText`, fallback to `inputText`
     const contentToTranslate = outputText?.trim()
       ? sanitizeText(outputText)
-      : documentContent?.trim()
-      ? sanitizeText(documentContent)
+      : inputText?.trim()
+      ? sanitizeText(inputText)
       : "No content available for translation.";
   
     // Handle case when there's no content to translate
@@ -154,7 +159,7 @@ useEffect(() => {
           },
           {
             role: "user",
-            content: `Translate the following text to ${language}: ${contentToTranslate}`,
+            content: `Translate the following text to ${language}: ${truncateContent(contentToTranslate)}`,
           },
         ],
         max_tokens: 500,
