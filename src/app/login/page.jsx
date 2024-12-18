@@ -55,7 +55,7 @@ export default function Signup() {
         localStorage.setItem('last_name', response.data.data.last_name); // Store name
         localStorage.setItem('email', response.data.data.email); // Store email
 
-        // Navigate to dashboard
+        // Navigate to dashboard//
         router.push('/dashboard'); // Use router to navigate
       } else {
         // Handle unexpected response structure
