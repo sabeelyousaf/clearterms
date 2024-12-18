@@ -54,17 +54,7 @@ export default function Signup() {
         localStorage.setItem('first_name', response.data.data.first_name); // Store name
         localStorage.setItem('last_name', response.data.data.last_name); // Store name
         localStorage.setItem('email', response.data.data.email); // Store email
-  
 
-        chrome.storage.local.set({
-          token: response.data.token,
-          subscription: response.data.subscription,
-          first_name: response.data.data.first_name,
-          last_name: response.data.data.last_name,
-          email: response.data.data.email,
-        }, () => {
-          console.log('Token and user data saved in Chrome storage');
-        });
         // Navigate to dashboard
         router.push('/dashboard'); // Use router to navigate
       } else {
