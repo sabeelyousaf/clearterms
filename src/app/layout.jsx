@@ -17,7 +17,7 @@ export default function RootLayout({ children }) {
   useEffect(() => {
     const checkAuthentication = () => {
       const isDashboardRoute = pathname.startsWith('/dashboard');
-      const token = sessionStorage.getItem('token');
+      const token = localStorage.getItem('token');
 
       if (isDashboardRoute && !token) {
         router.push('/login'); // Redirect to login if not authenticated

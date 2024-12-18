@@ -18,7 +18,7 @@ const Dashboard = () => {
   const router = useRouter();
 
   const fetchSubscription = async () => {
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
     try {
       const response = await axios.get(checkSubscription, {
         headers: {
@@ -35,7 +35,7 @@ const Dashboard = () => {
   };
 
   const fetchDocs = async () => {
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
     try {
       const response = await axios.get(allDocs, {
         headers: {
@@ -54,7 +54,7 @@ const Dashboard = () => {
   };
 
   const handleDeleteDocument = async (id) => {
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
     try {
       await axios.delete(`${deleteDoc}/${id}`, {
         headers: {
@@ -72,7 +72,7 @@ const Dashboard = () => {
   const handleFileUpload = async (e) => {
     const uploadedFiles = Array.from(e.target.files);
     const formData = new FormData();
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
     uploadedFiles.forEach((file) => formData.append("documents[]", file));
     setIsLoading(true);
@@ -103,8 +103,8 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    const firstName = sessionStorage.getItem("first_name") || "";
-    const lastName = sessionStorage.getItem("last_name") || "";
+    const firstName = localStorage.getItem("first_name") || "";
+    const lastName = localStorage.getItem("last_name") || "";
     setUsername(`${firstName} ${lastName}`.trim());
 
     // Fetch subscription and documents

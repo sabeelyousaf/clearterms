@@ -79,22 +79,22 @@ const Footer = () => {
                         <h4 className="text-lg font-bold mb-4">Follow Us</h4>
                         <ul className="flex space-x-4">
                             <li>
-                                <Link href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+                                <Link href="https://www.facebook.com/share/CXo9tmsUpjWmjJ32/?mibextid=LQQJ4d" target="_blank" rel="noopener noreferrer">
                                     <FaFacebook className="w-6 h-6 text-white hover:text-indigo-300" />
                                 </Link>
                             </li>
                             <li>
-                                <Link href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+                                <Link href="https://www.tiktok.com/@clearterms_?_t=8s0zuk76Pa4&_r=1" target="_blank" rel="noopener noreferrer">
                                     <FaTwitter className="w-6 h-6 text-white hover:text-indigo-300" />
                                 </Link>
                             </li>
                             <li>
-                                <Link href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
+                                <Link href="https://www.linkedin.com/posts/clear-terms_clearterms-simplifydocuments-innovationintech-activity-7269870570421243904-9dBi?utm_source=share&utm_medium=member_ios" target="_blank" rel="noopener noreferrer">
                                     <FaLinkedin className="w-6 h-6 text-white hover:text-indigo-300" />
                                 </Link>
                             </li>
                             <li>
-                                <Link href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+                                <Link href="https://www.instagram.com/clearterms_/profilecard/?igsh=YzZvcTNtb3I5OWMw" target="_blank" rel="noopener noreferrer">
                                     <FaInstagram className="w-6 h-6 text-white hover:text-indigo-300" />
                                 </Link>
                             </li>

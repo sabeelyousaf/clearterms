@@ -28,7 +28,7 @@ const Dashboard = () => {
     const confirmDelete = window.confirm("Are you sure you want to delete this document?");
     if (!confirmDelete) return; // Exit if user cancels
   
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
     try {
       const response = await axios.delete(`${deleteDoc}/${id}`, {
         headers: {
@@ -55,7 +55,7 @@ const Dashboard = () => {
   
 
   const fetchSubscription = async () => {
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
     try {
       const response = await axios.get(checkSubscription, {
         headers: {
@@ -79,7 +79,7 @@ const Dashboard = () => {
     return new Date(dateString).toLocaleDateString('en-GB', options).replace(',', ''); // Use en-GB to get 'dd mmm yyyy' format
   };
   const fetchDocs = async () => {
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
     try {
       const response = await axios.get(allDocs, {
         headers: {
@@ -94,8 +94,8 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    const firstName = sessionStorage.getItem("first_name") || "";
-    const lastName = sessionStorage.getItem("last_name") || "";
+    const firstName = localStorage.getItem("first_name") || "";
+    const lastName = localStorage.getItem("last_name") || "";
     setUsername(`${firstName} ${lastName}`.trim());
 
     // Fetch subscription and documents
@@ -108,7 +108,7 @@ const Dashboard = () => {
     setFiles([...files, ...uploadedFiles]);
 
     const formData = new FormData();
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
     uploadedFiles.forEach((file) => formData.append("documents[]", file));
 
     setIsLoading(true); // Show preloader

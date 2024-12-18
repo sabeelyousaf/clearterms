@@ -15,7 +15,7 @@ const SimplifyModal = ({ isOpen, onClose, simplify, documentId }) => {
   const handleTranslate = async () => {
     setLoading(true);
     setTranslatedText('');
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
     try {
       const response = await axios.post(docSimplify, {
@@ -46,7 +46,7 @@ const SimplifyModal = ({ isOpen, onClose, simplify, documentId }) => {
     }
 
     setLoading(true);
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
     const apiUrl = selectedDownloadType === "pdf" ? generatePDF : generateDocx;
 
     try {

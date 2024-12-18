@@ -39,7 +39,7 @@ useEffect(() => {
     }
 
     setLoading(true);
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
     const apiUrl = downloadContent;
 
     try {
@@ -81,7 +81,7 @@ useEffect(() => {
   const fetchDocumentContent = async () => {
     setIsLoading(true);
     try {
-      const token = sessionStorage.getItem("token");
+      const token = localStorage.getItem("token");
       if (!token) {
         setError("User is not authenticated.");
         return;
@@ -346,13 +346,6 @@ useEffect(() => {
                 {summarizeLoading ? <div className="loader mr-2"></div> : "Summarize"}
               </button>
             
-  <button
-    className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none flex items-center"
-    onClick={handleLanguageChange}
-  >
-    Translate
-  </button>
-
 
               {reset && (
   <button
@@ -367,7 +360,7 @@ useEffect(() => {
 
               <div className="mt-3"></div>
             </div>
-            <div className="flex justify-center mt-4">
+            <div className="flex justify-center mt-4 gap-2">
               <label
                 htmlFor="language"
                 className="mr-2 mt-2 font-medium text-gray-700"
@@ -413,9 +406,16 @@ useEffect(() => {
  
 </select>
 
+<button
+    className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none flex items-center"
+    onClick={handleLanguageChange}
+  >
+    Translate
+  </button>
+
 
 <select
-  className={`border rounded py-1 px-2 ms-4 ${
+  className={`border rounded py-1 px-2 ms-3 ${
     reset
       ? "bg-white text-black cursor-pointer"
       : "bg-gray-100 text-gray-400 cursor-not-allowed"

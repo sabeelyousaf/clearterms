@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation' // Use 'next/navigation' for client-
 export default function Success() {
   const router = useRouter();
 useEffect(() => {
-  sessionStorage.removeItem('subscription');
-  sessionStorage.setItem('subscription',true);
+  localStorage.removeItem('subscription');
+  localStorage.setItem('subscription',true);
 }, [])
 
   const handleBackToDashboard = () => {

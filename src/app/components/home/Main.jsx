@@ -16,7 +16,7 @@ export default function Main() {
       });
       if (response.data.status === 200) {
         toast.success("Logged in successfully");
-        sessionStorage.setItem("token", response.data.token);
+        localStorage.setItem("token", response.data.token);
         router.push("/dashboard");
       } else {
         toast.error(response.data.message || "Google login failed");

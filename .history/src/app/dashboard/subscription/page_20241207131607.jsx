@@ -53,7 +53,7 @@ const Subscription = () => {
   const [loading, setLoading] = useState(true);
 
   const fetchSubscription = async () => {
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
     try {
       const response = await axios.get(checkSubscription, {
         headers: {
@@ -76,7 +76,7 @@ const Subscription = () => {
   const handleCheckout = async (price, title) => {
     const stripe = await stripePromise;
     if (!stripe) return;
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
     setLoading(true);
 
     try {

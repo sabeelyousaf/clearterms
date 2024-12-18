@@ -41,7 +41,7 @@ useEffect(() => {
     }
 
     setLoading(true);
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
     const apiUrl = downloadContent;
 
     try {
@@ -83,7 +83,7 @@ useEffect(() => {
   const fetchDocumentContent = async () => {
     setIsLoading(true);
     try {
-      const token = sessionStorage.getItem("token");
+      const token = localStorage.getItem("token");
       if (!token) {
         setError("User is not authenticated.");
         return;

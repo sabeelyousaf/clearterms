@@ -18,7 +18,7 @@ export default function Signup() {
 
   // Check for token and redirect to dashboard if it exists
   useEffect(() => {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     if (token) {
       router.push('/dashboard'); // Use router to navigate
     }
@@ -48,13 +48,23 @@ export default function Signup() {
           theme: 'light',
         });
         
-        // Store the token and user data in sessionStorage
-        sessionStorage.setItem('token', response.data.token);
-        sessionStorage.setItem('subscription', response.data.subscription);
-        sessionStorage.setItem('first_name', response.data.data.first_name); // Store name
-        sessionStorage.setItem('last_name', response.data.data.last_name); // Store name
-        sessionStorage.setItem('email', response.data.data.email); // Store email
+        // Store the token and user data in localStorage
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('subscription', response.data.subscription);
+        localStorage.setItem('first_name', response.data.data.first_name); // Store name
+        localStorage.setItem('last_name', response.data.data.last_name); // Store name
+        localStorage.setItem('email', response.data.data.email); // Store email
+  
 
+        chrome.storage.local.set({
+          token: response.data.token,
+          subscription: response.data.subscription,
+          first_name: response.data.data.first_name,
+          last_name: response.data.data.last_name,
+          email: response.data.data.email,
+        }, () => {
+          console.log('Token and user data saved in Chrome storage');
+        });
         // Navigate to dashboard
         router.push('/dashboard'); // Use router to navigate
       } else {
@@ -95,7 +105,7 @@ export default function Signup() {
       });
       if (response.data.status === 200) {
         toast.success("Logged in successfully");
-        sessionStorage.setItem("token", response.data.token);
+        localStorage.setItem("token", response.data.token);
         router.push("/dashboard");
       } else {
         toast.error(response.data.message || "Google login failed");

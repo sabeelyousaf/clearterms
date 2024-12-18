@@ -22,7 +22,7 @@ export default function Signup() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const token = sessionStorage.getItem("token");
+    const token = localStorage.getItem("token");
     if (token) {
       window.location.href = "/dashboard";
     }
@@ -83,7 +83,7 @@ export default function Signup() {
           autoClose: 3000,
           theme: "light",
         });
-        sessionStorage.setItem("token", res.data.token);
+        localStorage.setItem("token", res.data.token);
         window.location.href = "/verify-email";
       }
     } catch (error) {
