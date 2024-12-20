@@ -184,7 +184,7 @@ export default function Signup() {
                 onChange={(e) => setIsTermsChecked(e.target.checked)}
               />
               <label htmlFor="terms" className="text-sm">
-                I accept the <Link href="/terms" className="text-indigo-600 font-bold">Terms & Conditions</Link>.
+                I accept the <Link href="/terms-conditions" className="text-indigo-600 font-bold">Terms & Conditions</Link>.
               </label>
             </div>
 
