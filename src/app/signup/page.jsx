@@ -16,6 +16,7 @@ export default function Signup() {
     last_name: "",
     email: "",
     password: "",
+    confirm_password:"12345678"
   });
   const [isPrivacyChecked, setIsPrivacyChecked] = useState(false);
   const [isTermsChecked, setIsTermsChecked] = useState(false);
